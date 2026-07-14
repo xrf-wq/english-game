@@ -1,0 +1,95 @@
+{
+  "title": "Vocabulary Collection",
+  "words": [
+    {
+      "word": "consumption",
+      "pos": "n.",
+      "phonetic": "/kənˈsʌmpʃn/",
+      "meaning": "消费；消耗",
+      "example": "Excessive consumption of sugar is bad for your health.",
+      "exampleCn": "过量摄入糖分对健康不利。",
+      "imageTheme": "energy chart"
+    },
+    {
+      "word": "convenience",
+      "pos": "n.",
+      "phonetic": "/kənˈviːniəns/",
+      "meaning": "便利；方便",
+      "example": "Online shopping offers great convenience for busy people.",
+      "exampleCn": "网购为忙碌的人们提供了极大的便利。",
+      "imageTheme": "shopping online"
+    },
+    {
+      "word": "innovation",
+      "pos": "n.",
+      "phonetic": "/ˌɪnəˈveɪʃn/",
+      "meaning": "创新；革新",
+      "example": "Technological innovation drives economic growth.",
+      "exampleCn": "技术创新推动经济增长。",
+      "imageTheme": "lightbulb idea"
+    },
+    {
+      "word": "sustainable",
+      "pos": "adj.",
+      "phonetic": "/səˈsteɪnəbl/",
+      "meaning": "可持续的",
+      "example": "We need to develop sustainable energy sources.",
+      "exampleCn": "我们需要开发可持续的能源。",
+      "imageTheme": "green earth"
+    },
+    {
+      "word": "phenomenon",
+      "pos": "n.",
+      "phonetic": "/fɪˈnɒmɪnən/",
+      "meaning": "现象；奇迹",
+      "example": "The Northern Lights is a natural phenomenon.",
+      "exampleCn": "北极光是一种自然现象。",
+      "imageTheme": "aurora sky"
+    },
+    {
+      "word": "collaborate",
+      "pos": "v.",
+      "phonetic": "/kəˈlæbəreɪt/",
+      "meaning": "合作；协作",
+      "example": "The two companies decided to collaborate on the project.",
+      "exampleCn": "两家公司决定在这个项目上合作。",
+      "imageTheme": "teamwork"
+    },
+    {
+      "word": "perspective",
+      "pos": "n.",
+      "phonetic": "/pəspektɪv/",
+      "meaning": "视角；观点",
+      "example": "Try to see the problem from a different perspective.",
+      "exampleCn": "试着从不同的角度看这个问题。",
+      "imageTheme": "different views"
+    },
+    {
+      "word": "significant",
+      "pos": "adj.",
+      "phonetic": "/sɪɡˈnɪfɪkənt/",
+      "meaning": "重要的；显著的",
+      "example": "There has been a significant improvement in air quality.",
+      "exampleCn": "空气质量有了显著的改善。",
+      "imageTheme": "growth up arrow"
+    },
+    {
+      "word": "essential",
+      "pos": "adj.",
+      "phonetic": "/ɪˈsenʃl/",
+      "meaning": "必要的；本质的",
+      "example": "Water is essential for all living things.",
+      "exampleCn": "水对所有生物都是必不可少的。",
+      "imageTheme": "water drop"
+    },
+    {
+      "word": "opportunity",
+      "pos": "n.",
+      "phonetic": "/ˌɒpəˈtjuːnəti/",
+      "meaning": "机会；时机",
+      "example": "This is a golden opportunity to improve yourself.",
+      "exampleCn": "这是提升自己的黄金机会。",
+      "imageTheme": "open door"
+    }
+  ]
+}

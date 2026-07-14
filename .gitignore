@@ -1,0 +1,4 @@
+node_modules/
+.DS_Store
+generate_images.py
+images_progress.json

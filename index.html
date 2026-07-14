@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>Vocabulary Collection</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #f0f4f8;
+      min-height: 100vh;
+      min-height: 100dvh;
+      color: #1a1a2e;
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    .header {
+      background: #fff;
+      padding: 14px 16px 10px;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header h1 {
+      font-size: 22px;
+      font-weight: 800;
+      color: #1a1a2e;
+      letter-spacing: -0.5px;
+    }
+    .header .subtitle {
+      font-size: 12px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    .tab-switcher {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin: 14px auto 0;
+      background: #eef1f6;
+      border-radius: 14px;
+      padding: 4px;
+      width: fit-content;
+    }
+    .tab-btn {
+      padding: 8px 28px;
+      border: none;
+      background: transparent;
+      font-size: 13px;
+      font-weight: 700;
+      color: #999;
+      cursor: pointer;
+      border-radius: 11px;
+      transition: all 0.3s ease;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      position: relative;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .tab-btn.active {
+      background: #fff;
+      color: #2563eb;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+    }
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 22px;
+      height: 3px;
+      background: #2563eb;
+      border-radius: 2px;
+    }
+
+    .container {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 14px 12px 100px;
+    }
+
+    /* === STUDY MODE === */
+    #study-mode { display: flex; flex-direction: column; gap: 16px; }
+
+    .word-card {
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 3px 16px rgba(0,0,0,0.06);
+      cursor: pointer;
+      perspective: 1200px;
+      min-height: 320px;
+      position: relative;
+      transition: transform 0.15s ease;
+    }
+    .word-card:active { transform: scale(0.985); }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      min-height: 320px;
+      transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+    }
+    .card-inner.flipped { transform: rotateY(180deg); }
+
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      min-height: 320px;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-back { transform: rotateY(180deg); }
+
+    .card-illustration {
+      width: 100%;
+      height: 150px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-illustration img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .card-illustration .scene {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .scene svg { width: 100%; height: 100%; }
+
+    .card-content { padding: 16px 18px; flex: 1; display: flex; flex-direction: column; }
+
+    .word-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .word-text { font-size: 24px; font-weight: 800; color: #1a1a2e; letter-spacing: -0.5px; }
+
+    .play-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 2px 10px rgba(37, 99, 235, 0.3);
+      transition: transform 0.2s ease;
+    }
+    .play-btn:active { transform: scale(0.88); }
+    .play-btn svg { width: 16px; height: 16px; fill: #fff; margin-left: 2px; }
+
+    .play-btn-sm {
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .play-btn-sm svg { width: 11px; height: 11px; fill: #fff; margin-left: 1px; }
+
+    .word-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+    .pos-tag {
+      background: #eef1f6;
+      color: #666;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+    .phonetic { font-size: 14px; color: #999; font-family: 'Lucida Sans Unicode', 'Segoe UI', sans-serif; }
+
+    .flip-hint {
+      text-align: center;
+      color: #ccc;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: auto;
+      padding-top: 12px;
+    }
+
+    .card-back .card-content { justify-content: center; align-items: center; text-align: center; }
+    .card-back .chinese-meaning { font-size: 24px; font-weight: 800; color: #2563eb; margin-bottom: 16px; }
+
+    .example-box {
+      background: #f8f9fc;
+      border-radius: 12px;
+      padding: 14px;
+      width: 100%;
+      text-align: left;
+    }
+    .example-en {
+      font-size: 13px;
+      color: #333;
+      line-height: 1.6;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .example-cn { font-size: 12px; color: #999; margin-left: 36px; }
+
+    /* === QUIZ MODE === */
+    #quiz-mode { display: none; }
+    #quiz-mode.active { display: block; }
+
+    .quiz-progress { margin-bottom: 16px; }
+    .progress-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #999;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .progress-dots {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #e0e0e0;
+      transition: all 0.3s ease;
+    }
+    .dot.correct { background: #22c55e; box-shadow: 0 0 6px rgba(34,197,94,0.4); }
+    .dot.wrong { background: #ef4444; box-shadow: 0 0 6px rgba(239,68,68,0.4); }
+    .dot.current { background: #2563eb; box-shadow: 0 0 8px rgba(37,99,235,0.5); transform: scale(1.2); }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 5px;
+      background: #e0e0e0;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #2563eb, #3b82f6);
+      border-radius: 3px;
+      transition: width 0.4s ease;
+    }
+
+    .quiz-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 28px 18px;
+      box-shadow: 0 3px 16px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .quiz-chinese {
+      font-size: 28px;
+      font-weight: 800;
+      color: #1a1a2e;
+      margin-bottom: 4px;
+    }
+    .quiz-phonetic {
+      font-size: 16px;
+      color: #aaa;
+      font-family: 'Lucida Sans Unicode', 'Segoe UI', sans-serif;
+      margin-bottom: 20px;
+    }
+
+    .quiz-input {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 16px;
+      border: 3px solid #e0e0e0;
+      border-radius: 12px;
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      text-align: center;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+      -webkit-appearance: none;
+    }
+    .quiz-input:focus { border-color: #2563eb; box-shadow: 0 0 0 4px rgba(37,99,235,0.1); }
+    .quiz-input.correct { border-color: #22c55e; box-shadow: 0 0 0 4px rgba(34,197,94,0.12); background: #f0fdf4; }
+    .quiz-input.wrong {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 4px rgba(239,68,68,0.12);
+      background: #fef2f2;
+      animation: shake 0.5s ease;
+    }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-6px); }
+      80% { transform: translateX(6px); }
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 13px;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #fff;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 5px 18px rgba(37,99,235,0.3);
+      transition: all 0.25s ease;
+      text-transform: uppercase;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .submit-btn:active { transform: scale(0.97); }
+
+    .feedback-msg { margin-top: 12px; font-size: 13px; font-weight: 600; min-height: 18px; }
+    .feedback-msg.correct { color: #22c55e; }
+    .feedback-msg.wrong { color: #ef4444; }
+
+    .hint-btn {
+      margin-top: 8px;
+      padding: 6px 16px;
+      font-size: 11px;
+      background: none;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      color: #999;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .hint-btn:active { border-color: #2563eb; color: #2563eb; }
+    .hint-text { margin-top: 4px; font-size: 16px; color: #2563eb; font-weight: 700; letter-spacing: 2px; }
+
+    /* === RESULTS === */
+    #results-screen { display: none; text-align: center; padding: 30px 16px; }
+    #results-screen.active { display: block; }
+    .results-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 30px 18px;
+      box-shadow: 0 3px 16px rgba(0,0,0,0.06);
+    }
+    .results-emoji { font-size: 48px; margin-bottom: 12px; }
+    .results-title { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+    .results-score { font-size: 40px; font-weight: 800; color: #2563eb; margin: 12px 0; }
+    .results-detail { font-size: 13px; color: #888; margin-bottom: 20px; }
+    .restart-btn {
+      padding: 12px 32px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .restart-btn:active { transform: scale(0.95); }
+
+    /* === NAME INPUT === */
+    #name-screen { display: none; text-align: center; padding: 30px 16px; }
+    #name-screen.active { display: block; }
+    .name-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 30px 18px;
+      box-shadow: 0 3px 16px rgba(0,0,0,0.06);
+    }
+    .name-card h2 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .name-card p { font-size: 13px; color: #888; margin-bottom: 20px; }
+    .name-input {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 16px;
+      border: 3px solid #e0e0e0;
+      border-radius: 12px;
+      outline: none;
+      text-align: center;
+      font-weight: 600;
+      margin-bottom: 16px;
+      -webkit-appearance: none;
+    }
+    .name-input:focus { border-color: #2563eb; box-shadow: 0 0 0 4px rgba(37,99,235,0.1); }
+
+    /* === CHECK-IN SUCCESS === */
+    #checkin-screen { display: none; text-align: center; padding: 30px 16px; }
+    #checkin-screen.active { display: block; }
+    .checkin-card {
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      border-radius: 20px;
+      padding: 36px 18px;
+      color: #fff;
+      box-shadow: 0 8px 32px rgba(37, 99, 235, 0.3);
+    }
+    .checkin-icon { font-size: 64px; margin-bottom: 16px; }
+    .checkin-title { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+    .checkin-name { font-size: 28px; font-weight: 800; margin: 12px 0; text-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+    .checkin-score { font-size: 16px; opacity: 0.9; margin-bottom: 8px; }
+    .checkin-detail { font-size: 13px; opacity: 0.7; margin-bottom: 24px; }
+    .checkin-btn {
+      padding: 12px 32px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #2563eb;
+      background: #fff;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .checkin-btn:active { transform: scale(0.95); }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { animation: fadeInUp 0.4s ease forwards; }
+
+    @keyframes confetti {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-200px) rotate(720deg); opacity: 0; }
+    }
+
+    /* === MOBILE RESPONSIVE === */
+    @media (max-width: 380px) {
+      .header h1 { font-size: 19px; }
+      .tab-btn { padding: 7px 22px; font-size: 12px; }
+      .word-text { font-size: 20px; }
+      .quiz-chinese { font-size: 24px; }
+      .card-illustration { height: 130px; }
+    }
+
+    @media (min-width: 600px) {
+      .container { padding: 22px 16px 100px; }
+      .header h1 { font-size: 26px; }
+    }
+
+    /* Safe area for phones with notch */
+    @supports (padding-bottom: env(safe-area-inset-bottom)) {
+      .container { padding-bottom: calc(100px + env(safe-area-inset-bottom)); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Vocabulary Collection</h1>
+    <p class="subtitle" id="word-count"></p>
+    <div class="tab-switcher">
+      <button class="tab-btn active" id="tab-study" onclick="switchTab('study')">STUDY</button>
+      <button class="tab-btn" id="tab-quiz" onclick="switchTab('quiz')">QUIZ</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- STUDY MODE -->
+    <div id="study-mode"></div>
+
+    <!-- QUIZ MODE -->
+    <div id="quiz-mode">
+      <div class="quiz-progress">
+        <div class="progress-label" id="progress-label"></div>
+        <div class="progress-dots" id="progress-dots"></div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-bar"></div></div>
+      </div>
+      <div class="quiz-card" id="quiz-card">
+        <div class="quiz-chinese" id="quiz-chinese"></div>
+        <div class="quiz-phonetic" id="quiz-phonetic"></div>
+        <input type="text" class="quiz-input" id="quiz-input" placeholder="Type the word..." autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="text">
+        <button class="submit-btn" id="submit-btn" onclick="submitAnswer()">SUBMIT ANSWER</button>
+        <div class="feedback-msg" id="feedback-msg"></div>
+        <button class="hint-btn" id="hint-btn" onclick="showHint()"> Show Hint</button>
+        <div class="hint-text" id="hint-text"></div>
+      </div>
+    </div>
+
+    <!-- RESULTS SCREEN -->
+    <div id="results-screen">
+      <div class="results-card">
+        <div class="results-emoji" id="results-emoji"></div>
+        <div class="results-title" id="results-title"></div>
+        <div class="results-score" id="results-score"></div>
+        <div class="results-detail" id="results-detail"></div>
+        <button class="submit-btn" onclick="showNameInput()" style="margin-bottom:12px;">提交成绩</button>
+        <button class="restart-btn" onclick="restartQuiz()">TRY AGAIN</button>
+      </div>
+    </div>
+
+    <!-- NAME INPUT SCREEN -->
+    <div id="name-screen">
+      <div class="name-card">
+        <h2>📝 输入你的姓名</h2>
+        <p>完成后提交即可打卡</p>
+        <input type="text" class="name-input" id="name-input" placeholder="请输入姓名" inputmode="text" maxlength="20">
+        <button class="submit-btn" onclick="submitCheckin()">确认提交</button>
+      </div>
+    </div>
+
+    <!-- CHECK-IN SUCCESS SCREEN -->
+    <div id="checkin-screen">
+      <div class="checkin-card">
+        <div class="checkin-icon">🎉</div>
+        <div class="checkin-title">打卡成功！</div>
+        <div class="checkin-name" id="checkin-name"></div>
+        <div class="checkin-score" id="checkin-score"></div>
+        <div class="checkin-detail" id="checkin-detail"></div>
+        <button class="checkin-btn" onclick="restartQuiz()">再来一次</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const WORDS = [
+      { word:"bear", pos:"n.", phonetic:"/beə(r)/", meaning:"熊", example:"The bear caught a fish from the river.", exampleCn:"那只熊从河里抓了一条鱼。", colors:["#8B4513","#CD853F","#DEB887"], emoji:"🐻" },
+      { word:"black", pos:"adj.", phonetic:"/blæk/", meaning:"黑色的", example:"She wore a black coat in winter.", exampleCn:"她冬天穿了一件黑色外套。", colors:["#374151","#4B5563","#6B7280"], emoji:"⬛" },
+      { word:"grizzly", pos:"n.", phonetic:"/ˈɡrɪzli/", meaning:"灰熊", example:"Grizzly bears live in the mountains of North America.", exampleCn:"灰熊生活在北美洲的山区。", colors:["#6B7280","#9CA3AF","#D1D5DB"], emoji:"🐻‍❄️" },
+      { word:"brown", pos:"adj.", phonetic:"/bran/", meaning:"棕色的", example:"The dog has beautiful brown eyes.", exampleCn:"那只狗有一双漂亮的棕色眼睛。", colors:["#92400E","#B45309","#D97706"], emoji:"" },
+      { word:"blonde", pos:"adj.", phonetic:"/blɒnd/", meaning:"金色的，浅黄色的", example:"She has long blonde hair.", exampleCn:"她有一头金色的长发。", colors:["#F59E0B","#FBBF24","#FCD34D"], emoji:"💛" },
+      { word:"intelligent", pos:"adj.", phonetic:"/nˈtelɪdʒənt/", meaning:"聪明的", example:"Dolphins are highly intelligent animals.", exampleCn:"海豚是非常聪明的动物。", colors:["#7C3AED","#8B5CF6","#A78BFA"], emoji:"" },
+      { word:"curious", pos:"adj.", phonetic:"/ˈkjʊəriəs/", meaning:"好奇的", example:"The cat was curious about the new toy.", exampleCn:"那只猫对新玩具很好奇。", colors:["#0891B2","#06B6D4","#22D3EE"], emoji:"🔍" },
+      { word:"belong to", pos:"phr.", phonetic:"/bɪˈlɒ tuː/", meaning:"属于", example:"This book belongs to me.", exampleCn:"这本书属于我。", colors:["#059669","#10B981","#34D399"], emoji:"🏷️" },
+      { word:"area", pos:"n.", phonetic:"/ˈeəriə/", meaning:"区域，地方", example:"This area is known for its beautiful scenery.", exampleCn:"这个地区以其美丽的风景而闻名。", colors:["#2563EB","#3B82F6","#60A5FA"], emoji:"🗺️" },
+      { word:"hurt", pos:"v.", phonetic:"/hɜːt/", meaning:"伤害", example:"Be careful not to hurt yourself.", exampleCn:"小心别伤到自己。", colors:["#DC2626","#EF4444","#F87171"], emoji:"💔" },
+      { word:"African", pos:"adj.", phonetic:"/ˈæfrɪkən/", meaning:"非洲的", example:"African elephants are the largest land animals.", exampleCn:"非洲象是最大的陆地动物。", colors:["#D97706","#F59E0B","#FCD34D"], emoji:"🌍" },
+      { word:"Asian", pos:"adj.", phonetic:"/eɪʒn/", meaning:"亚洲的", example:"Asian culture has a long and rich history.", exampleCn:"亚洲文化有着悠久而丰富的历史。", colors:["#E11D48","#F43F5E","#FB7185"], emoji:"🏯" },
+      { word:"on the other hand", pos:"phr.", phonetic:"/ɒn ði ˈʌðə hænd/", meaning:"另一方面", example:"The job pays well. On the other hand, it requires long hours.", exampleCn:"这份工作薪水不错，但另一方面，它需要长时间工作。", colors:["#6366F1","#818CF8","#A5B4FC"], emoji:"🔄" },
+      { word:"in the same way", pos:"phr.", phonetic:"/n ðə seɪm weɪ/", meaning:"同样地", example:"She solved the problem in the same way as her teacher.", exampleCn:"她用和老师同样的方式解决了这个问题。", colors:["#0D9488","#14B8A6","#2DD4BF"], emoji:"" },
+      { word:"similarity", pos:"n.", phonetic:"/ˌsɪməˈlærəti/", meaning:"相似点", example:"There are many similarities between the two languages.", exampleCn:"这两种语言有很多相似之处。", colors:["#4F46E5","#6366F1","#818CF8"], emoji:"" },
+      { word:"difference", pos:"n.", phonetic:"/ˈdɪfrəns/", meaning:"不同点", example:"Can you tell the difference between these two pictures?", exampleCn:"你能分辨出这两张图片的不同之处吗？", colors:["#C026D3","#D946EF","#E879F9"], emoji:"" },
+      { word:"lead", pos:"v.", phonetic:"/liːd/", meaning:"带领，领导", example:"She will lead the team to victory.", exampleCn:"她将带领团队走向胜利。", colors:["#B91C1C","#DC2626","#EF4444"], emoji:"" },
+      { word:"characteristic", pos:"n.", phonetic:"/ˌkærəktəˈrɪstɪk/", meaning:"特征，特点", example:"One characteristic of cats is their independence.", exampleCn:"猫的一个特征是它们的独立性。", colors:["#7E22CE","#9333EA","#A855F7"], emoji:"✨" },
+      { word:"dangerous", pos:"adj.", phonetic:"/deɪndʒərəs/", meaning:"危险的", example:"It is dangerous to swim in the river at night.", exampleCn:"晚上在河里游泳很危险。", colors:["#DC2626","#EF4444","#F87171"], emoji:"" },
+      { word:"human", pos:"n.", phonetic:"/ˈhjuːmən/", meaning:"人，人类", example:"Humans have lived on Earth for thousands of years.", exampleCn:"人类已经在地球上生活了数千年。", colors:["#0284C7","#0EA5E9","#38BDF8"], emoji:"" },
+      { word:"tuna", pos:"n.", phonetic:"/ˈtjunə/", meaning:"金枪鱼", example:"I had a tuna sandwich for lunch.", exampleCn:"我午餐吃了一个金枪鱼三明治。", colors:["#1E40AF","#2563EB","#3B82F6"], emoji:"" },
+      { word:"dolphin", pos:"n.", phonetic:"/ˈdlfɪn/", meaning:"海豚", example:"The dolphin jumped out of the water gracefully.", exampleCn:"海豚优雅地跃出水面。", colors:["#0284C7","#0EA5E9","#7DD3FC"], emoji:"" },
+      { word:"turtle", pos:"n.", phonetic:"/ˈtɜtl/", meaning:"海龟", example:"Sea turtles travel thousands of miles to lay their eggs.", exampleCn:"海龟跋涉数千英里去产卵。", colors:["#047857","#059669","#34D399"], emoji:"🐢" },
+      { word:"report", pos:"n.", phonetic:"/rɪˈpɔːt/", meaning:"报告，报道", example:"The weather report says it will rain tomorrow.", exampleCn:"天气预报说明天会下雨。", colors:["#1D4ED8","#2563EB","#60A5FA"], emoji:"📰" },
+      { word:"attack", pos:"n.", phonetic:"/əˈtæk/", meaning:"攻击", example:"The lion made a sudden attack on the zebra.", exampleCn:"狮子突然对斑马发起了攻击。", colors:["#B91C1C","#DC2626","#FCA5A5"], emoji:"️" },
+      { word:"record", pos:"v.", phonetic:"/rɪkɔːd/", meaning:"记录", example:"Scientists record data about animal behavior.", exampleCn:"科学家记录关于动物行为的数据。", colors:["#0369A1","#0284C7","#38BDF8"], emoji:"" },
+      { word:"ocean", pos:"n.", phonetic:"/ˈəʊʃn/", meaning:"海洋", example:"The ocean covers more than 70 percent of Earth's surface.", exampleCn:"海洋覆盖了地球表面70%以上的面积。", colors:["#0C4A6E","#0E7490","#22D3EE"], emoji:"" }
+    ];
+
+    let currentTab = 'study';
+    let currentQuizIndex = 0;
+    let quizResults = [];
+    let answered = false;
+    let wordImages = {};
+
+    async function init() {
+      document.getElementById('word-count').textContent = `${WORDS.length} Words`;
+      try {
+        const resp = await fetch('images.json');
+        wordImages = await resp.json();
+        console.log(`Loaded ${Object.keys(wordImages).length} images`);
+      } catch (e) {
+        console.warn('Failed to load images.json, using SVG fallbacks:', e);
+      }
+      renderStudyCards();
+      renderQuiz();
+    }
+
+    let quizStarted = false;
+
+    function switchTab(tab) {
+      currentTab = tab;
+      document.getElementById('tab-study').classList.toggle('active', tab === 'study');
+      document.getElementById('tab-quiz').classList.toggle('active', tab === 'quiz');
+      document.getElementById('study-mode').style.display = tab === 'study' ? 'flex' : 'none';
+      document.getElementById('quiz-mode').style.display = tab === 'quiz' ? 'block' : 'none';
+      document.getElementById('quiz-mode').classList.toggle('active', tab === 'quiz');
+      document.getElementById('results-screen').classList.remove('active');
+      document.getElementById('name-screen').classList.remove('active');
+      document.getElementById('checkin-screen').classList.remove('active');
+
+      if (tab === 'quiz') {
+        if (!quizStarted) {
+          quizStarted = true;
+          restartQuiz();
+        } else {
+          document.getElementById('quiz-mode').style.display = 'block';
+          showQuizWord();
+        }
+      }
+    }
+
+    /* ===== RENDER STUDY CARDS ===== */
+    function renderStudyCards() {
+      const container = document.getElementById('study-mode');
+      container.innerHTML = '';
+      WORDS.forEach((w, i) => {
+        const card = document.createElement('div');
+        card.className = 'word-card fade-in';
+        card.style.animationDelay = `${i * 0.06}s`;
+        card.style.opacity = '0';
+
+        const imgSrc = wordImages[w.word] ? `data:image/png;base64,${wordImages[w.word]}` : null;
+
+        card.innerHTML = `
+          <div class="card-inner" id="card-${i}">
+            <div class="card-front">
+              <div class="card-illustration">
+                <div class="scene" style="background:linear-gradient(135deg,${w.colors[0]}12,${w.colors[1]}18);">
+                  ${imgSrc
+                    ? `<img src="${imgSrc}" alt="${w.word}" loading="lazy">`
+                    : genIll(w, i)}
+                </div>
+              </div>
+              <div class="card-content">
+                <div class="word-row">
+                  <span class="word-text">${w.word}</span>
+                  <button class="play-btn" onclick="event.stopPropagation();speak('${esc(w.word)}')">
+                    <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+                  </button>
+                </div>
+                <div class="word-meta">
+                  <span class="pos-tag">${w.pos}</span>
+                  <span class="phonetic">${w.phonetic}</span>
+                </div>
+                <div class="flip-hint">CLICK TO FLIP</div>
+              </div>
+            </div>
+            <div class="card-back">
+              <div class="card-illustration">
+                <div class="scene" style="background:linear-gradient(135deg,${w.colors[0]}15,${w.colors[1]}20);">
+                  ${imgSrc
+                    ? `<img src="${imgSrc}" alt="${w.word}" loading="lazy" style="filter:brightness(0.85);">`
+                    : genBackSVG(w, i)}
+                </div>
+              </div>
+              <div class="card-content">
+                <div class="chinese-meaning">${w.meaning}</div>
+                <div class="example-box">
+                  <div class="example-en">
+                    <button class="play-btn-sm" onclick="event.stopPropagation();speak('${esc(w.example)}')">
+                      <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+                    </button>
+                    <span>"${w.example}"</span>
+                  </div>
+                  <div class="example-cn">${w.exampleCn}</div>
+                </div>
+                <div class="flip-hint">CLICK TO RETURN</div>
+              </div>
+            </div>
+          </div>`;
+
+        card.addEventListener('click', (e) => {
+          if (e.target.closest('button')) return;
+          document.getElementById(`card-${i}`).classList.toggle('flipped');
+        });
+        container.appendChild(card);
+      });
+    }
+
+    function genBackSVG(w, i) {
+      const c = w.colors;
+      return `<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+        <rect width="200" height="120" fill="url(#bg${i})" rx="0"/>
+        <defs><linearGradient id="bg${i}" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="${c[0]}" stop-opacity="0.12"/>
+          <stop offset="100%" stop-color="${c[1]}" stop-opacity="0.16"/>
+        </linearGradient></defs>
+        <text x="100" y="50" text-anchor="middle" font-size="44">${w.emoji}</text>
+        <text x="100" y="82" text-anchor="middle" font-size="13" fill="#888" font-family="sans-serif">${w.word}</text>
+      </svg>`;
+    }
+
+    function esc(s) { return s.replace(/'/g, "\\'"); }
+
+    /* ===== SPEECH ===== */
+    function speak(text) {
+      if (!('speechSynthesis' in window)) return;
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US'; u.rate = 0.85;
+      const voices = speechSynthesis.getVoices();
+      const v = voices.find(x => x.lang.startsWith('en') && x.name.includes('Google')) || voices.find(x => x.lang.startsWith('en'));
+      if (v) u.voice = v;
+      speechSynthesis.speak(u);
+    }
+    if ('speechSynthesis' in window) {
+      speechSynthesis.getVoices();
+      speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+    }
+
+    /* ===== QUIZ ===== */
+    function renderQuiz() {
+      const dots = document.getElementById('progress-dots');
+      dots.innerHTML = '';
+      WORDS.forEach((_, i) => {
+        const d = document.createElement('div');
+        d.className = 'dot'; d.id = `dot-${i}`;
+        dots.appendChild(d);
+      });
+    }
+
+    function showQuizWord() {
+      if (currentQuizIndex >= WORDS.length) { showResults(); return; }
+      const w = WORDS[currentQuizIndex];
+      answered = false;
+      document.getElementById('progress-label').textContent = `WORD ${currentQuizIndex + 1}/${WORDS.length}`;
+      document.getElementById('quiz-chinese').textContent = w.meaning;
+      document.getElementById('quiz-phonetic').textContent = w.phonetic;
+      const inp = document.getElementById('quiz-input');
+      inp.value = ''; inp.className = 'quiz-input'; inp.placeholder = 'Type the word...';
+      document.getElementById('feedback-msg').textContent = '';
+      document.getElementById('feedback-msg').className = 'feedback-msg';
+      document.getElementById('hint-text').textContent = '';
+      document.getElementById('hint-btn').style.display = 'inline-block';
+      document.getElementById('submit-btn').textContent = 'SUBMIT ANSWER';
+      document.getElementById('progress-bar').style.width = `${((currentQuizIndex + 1) / WORDS.length) * 100}%`;
+      WORDS.forEach((_, i) => {
+        const dot = document.getElementById(`dot-${i}`);
+        dot.className = 'dot';
+        if (i < currentQuizIndex) dot.className = quizResults[i] ? 'dot correct' : 'dot wrong';
+        else if (i === currentQuizIndex) dot.className = 'dot current';
+      });
+      setTimeout(() => { try { inp.focus(); } catch(e) {} }, 100);
+    }
+
+    function submitAnswer() {
+      if (answered) { currentQuizIndex++; showQuizWord(); return; }
+      const input = document.getElementById('quiz-input').value.trim().toLowerCase();
+      const correct = WORDS[currentQuizIndex].word.toLowerCase();
+      const isCorrect = input === correct;
+      answered = true;
+      quizResults[currentQuizIndex] = isCorrect;
+      const inp = document.getElementById('quiz-input');
+      const fb = document.getElementById('feedback-msg');
+      if (isCorrect) {
+        inp.className = 'quiz-input correct';
+        fb.textContent = '✅ Correct!';
+        fb.className = 'feedback-msg correct';
+      } else {
+        inp.className = 'quiz-input wrong';
+        fb.textContent = `❌ Wrong! Answer: ${correct}`;
+        fb.className = 'feedback-msg wrong';
+      }
+      speak(WORDS[currentQuizIndex].word);
+      const dot = document.getElementById(`dot-${currentQuizIndex}`);
+      dot.className = isCorrect ? 'dot correct' : 'dot wrong';
+      document.getElementById('submit-btn').textContent = 'NEXT WORD →';
+    }
+
+    function showHint() {
+      const w = WORDS[currentQuizIndex];
+      document.getElementById('hint-text').textContent = w.word[0] + '_'.repeat(w.word.length - 2) + w.word[w.word.length - 1];
+    }
+
+    /* ===== RESULTS ===== */
+    function showResults() {
+      document.getElementById('quiz-mode').style.display = 'none';
+      document.getElementById('results-screen').classList.add('active');
+      document.getElementById('name-screen').classList.remove('active');
+      document.getElementById('checkin-screen').classList.remove('active');
+      const correct = quizResults.filter(Boolean).length;
+      const total = WORDS.length;
+      const pct = Math.round((correct / total) * 100);
+      let emoji, title;
+      if (pct === 100) { emoji = '🏆'; title = 'Perfect Score!'; }
+      else if (pct >= 80) { emoji = '🎉'; title = 'Great Job!'; }
+      else if (pct >= 60) { emoji = ''; title = 'Good Effort!'; }
+      else if (pct >= 40) { emoji = '💪'; title = 'Keep Practicing!'; }
+      else { emoji = ''; title = 'Study More!'; }
+      document.getElementById('results-emoji').textContent = emoji;
+      document.getElementById('results-title').textContent = title;
+      document.getElementById('results-score').textContent = `${correct}/${total}`;
+      document.getElementById('results-detail').textContent = `正确率 ${pct}%，点击提交成绩完成打卡`;
+    }
+
+    function showNameInput() {
+      document.getElementById('results-screen').classList.remove('active');
+      document.getElementById('name-screen').classList.add('active');
+      setTimeout(() => { try { document.getElementById('name-input').focus(); } catch(e) {} }, 100);
+    }
+
+    function submitCheckin() {
+      const name = document.getElementById('name-input').value.trim();
+      if (!name) {
+        document.getElementById('name-input').style.borderColor = '#ef4444';
+        document.getElementById('name-input').placeholder = '请输入姓名后再提交';
+        return;
+      }
+
+      const correct = quizResults.filter(Boolean).length;
+      const total = WORDS.length;
+      const pct = Math.round((correct / total) * 100);
+
+      document.getElementById('name-screen').classList.remove('active');
+      document.getElementById('checkin-screen').classList.add('active');
+
+      document.getElementById('checkin-name').textContent = name;
+      document.getElementById('checkin-score').textContent = `得分：${correct}/${total}（${pct}%）`;
+
+      const now = new Date();
+      const dateStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+      document.getElementById('checkin-detail').textContent = `打卡时间：${dateStr}`;
+
+      // Save check-in record to localStorage
+      const record = { name, score: correct, total, pct, date: dateStr };
+      const history = JSON.parse(localStorage.getItem('vocab-checkin') || '[]');
+      history.push(record);
+      localStorage.setItem('vocab-checkin', JSON.stringify(history));
+    }
+
+    function restartQuiz() {
+      currentQuizIndex = 0;
+      quizResults = [];
+      answered = false;
+      document.getElementById('results-screen').classList.remove('active');
+      document.getElementById('name-screen').classList.remove('active');
+      document.getElementById('checkin-screen').classList.remove('active');
+      document.getElementById('quiz-mode').style.display = 'block';
+      renderQuiz();
+      showQuizWord();
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && currentTab === 'quiz') submitAnswer();
+    });
+
+    init();
+  </script>
+</body>
+</html>
