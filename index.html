@@ -576,16 +576,18 @@
     let wordImages = {};
 
     async function init() {
-      document.getElementById('word-count').textContent = `${WORDS.length} Words`;
+      document.getElementById('word-count').textContent = WORDS.length + ' Words';
+      renderStudyCards();
+      renderQuiz();
+      // Load images in background (won't block rendering)
       try {
         const resp = await fetch('images.json');
         wordImages = await resp.json();
-        console.log(`Loaded ${Object.keys(wordImages).length} images`);
+        console.log('Loaded ' + Object.keys(wordImages).length + ' images');
+        renderStudyCards(); // Re-render with images
       } catch (e) {
-        console.warn('Failed to load images.json, using SVG fallbacks:', e);
+        console.log('Using SVG illustrations');
       }
-      renderStudyCards();
-      renderQuiz();
     }
 
     let quizStarted = false;
