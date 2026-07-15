@@ -354,6 +354,8 @@
     var quizResults = [];
     var answered = false;
     var quizStarted = false;
+    var wrongAttempts = 0;
+    var hintShown = false;
 
     function init() {
       document.getElementById('word-count').textContent = WORDS.length + ' Words';
@@ -445,26 +447,55 @@
       setTimeout(function() { try { inp.focus(); } catch(e) {} }, 100);
     }
     function submitAnswer() {
-      if (answered) { currentQuizIndex++; showQuizWord(); return; }
       var input = document.getElementById('quiz-input').value.trim().toLowerCase();
       var correct = WORDS[currentQuizIndex].word.toLowerCase();
       var isCorrect = input === correct;
-      answered = true;
-      quizResults[currentQuizIndex] = isCorrect;
       var inp = document.getElementById('quiz-input');
       var fb = document.getElementById('feedback-msg');
+
       if (isCorrect) {
+        // 答对了
         inp.className = 'quiz-input correct';
         fb.textContent = '✅ Correct!';
         fb.className = 'feedback-msg correct';
+        quizResults[currentQuizIndex] = true;
+        speak(WORDS[currentQuizIndex].word);
+        document.getElementById('dot-' + currentQuizIndex).className = 'dot correct';
+        // 延迟后进入下一个单词
+        setTimeout(function() {
+          currentQuizIndex++;
+          wrongAttempts = 0;
+          hintShown = false;
+          showQuizWord();
+        }, 800);
       } else {
+        // 答错了
+        wrongAttempts++;
         inp.className = 'quiz-input wrong';
-        fb.textContent = '❌ Wrong! Answer: ' + correct;
-        fb.className = 'feedback-msg wrong';
+        document.getElementById('dot-' + currentQuizIndex).className = 'dot wrong';
+
+        if (wrongAttempts >= 3 && !hintShown) {
+          // 错3次，显示提示
+          hintShown = true;
+          var w = WORDS[currentQuizIndex];
+          var hint = w.word[0] + '_'.repeat(w.word.length - 2) + w.word[w.word.length - 1];
+          fb.textContent = '❌ 再想想！提示：' + hint;
+          fb.className = 'feedback-msg wrong';
+          document.getElementById('hint-text').textContent = '';
+        } else if (hintShown) {
+          fb.textContent = '❌ 再试一次！提示：' + WORDS[currentQuizIndex].word[0] + '...' + WORDS[currentQuizIndex].word[WORDS[currentQuizIndex].word.length - 1];
+          fb.className = 'feedback-msg wrong';
+        } else {
+          fb.textContent = '❌ 不对，再试试！(已错' + wrongAttempts + '次)';
+          fb.className = 'feedback-msg wrong';
+        }
+        // 清空输入框，让用户重新输入
+        setTimeout(function() {
+          inp.value = '';
+          inp.className = 'quiz-input';
+          inp.focus();
+        }, 600);
       }
-      speak(WORDS[currentQuizIndex].word);
-      document.getElementById('dot-' + currentQuizIndex).className = isCorrect ? 'dot correct' : 'dot wrong';
-      document.getElementById('submit-btn').textContent = 'NEXT WORD →';
     }
     function showHint() {
       var w = WORDS[currentQuizIndex];
@@ -514,6 +545,8 @@
       currentQuizIndex = 0;
       quizResults = [];
       answered = false;
+      wrongAttempts = 0;
+      hintShown = false;
       document.getElementById('results-screen').classList.remove('active');
       document.getElementById('name-screen').classList.remove('active');
       document.getElementById('checkin-screen').classList.remove('active');
