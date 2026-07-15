@@ -639,7 +639,7 @@
               <div class="card-content">
                 <div class="word-row">
                   <span class="word-text">${w.word}</span>
-                  <button class="play-btn" onclick="event.stopPropagation();speak('${esc(w.word)}')">
+                  <button class="play-btn" data-audio="word" data-idx="${i}">
                     <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
                   </button>
                 </div>
@@ -662,7 +662,7 @@
                 <div class="chinese-meaning">${w.meaning}</div>
                 <div class="example-box">
                   <div class="example-en">
-                    <button class="play-btn-sm" onclick="event.stopPropagation();speakSentence('${esc(w.example)}')">
+                    <button class="play-btn-sm" data-audio="example" data-idx="${i}">
                       <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
                     </button>
                     <span>"${w.example}"</span>
@@ -674,9 +674,21 @@
             </div>
           </div>`;
 
+        // Word play button
+        card.querySelector('[data-audio="word"]').addEventListener('click', (e) => {
+          e.stopPropagation();
+          speakWord(WORDS[i].word);
+        });
+        // Example play button
+        card.querySelector('[data-audio="example"]').addEventListener('click', (e) => {
+          e.stopPropagation();
+          speakSentence(WORDS[i].example);
+        });
+        // Card flip
         card.addEventListener('click', (e) => {
           if (e.target.closest('button')) return;
           document.getElementById(`card-${i}`).classList.toggle('flipped');
+        });
         });
         container.appendChild(card);
       });
