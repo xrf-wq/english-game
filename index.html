@@ -3,22 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
   <title>Vocabulary Collection</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: #f0f4f8;
       min-height: 100vh;
       min-height: 100dvh;
       color: #1a1a2e;
       overflow-x: hidden;
-      -webkit-text-size-adjust: 100%;
     }
-
     .header {
       background: #fff;
       padding: 14px 16px 10px;
@@ -28,22 +23,11 @@
       top: 0;
       z-index: 100;
     }
-    .header h1 {
-      font-size: 22px;
-      font-weight: 800;
-      color: #1a1a2e;
-      letter-spacing: -0.5px;
-    }
-    .header .subtitle {
-      font-size: 12px;
-      color: #888;
-      margin-top: 2px;
-    }
-
+    .header h1 { font-size: 22px; font-weight: 800; color: #1a1a2e; }
+    .header .subtitle { font-size: 12px; color: #888; margin-top: 2px; }
     .tab-switcher {
       display: flex;
       justify-content: center;
-      gap: 0;
       margin: 14px auto 0;
       background: #eef1f6;
       border-radius: 14px;
@@ -63,8 +47,6 @@
       letter-spacing: 1px;
       text-transform: uppercase;
       position: relative;
-      -webkit-user-select: none;
-      user-select: none;
     }
     .tab-btn.active {
       background: #fff;
@@ -82,76 +64,27 @@
       background: #2563eb;
       border-radius: 2px;
     }
-
     .container {
       max-width: 520px;
       margin: 0 auto;
       padding: 14px 12px 100px;
     }
-
-    /* === STUDY MODE === */
-    #study-mode { display: flex; flex-direction: column; gap: 16px; }
-
+    /* STUDY MODE */
+    #study-mode { display: flex; flex-direction: column; gap: 14px; }
     .word-card {
       background: #fff;
       border-radius: 20px;
       overflow: hidden;
       box-shadow: 0 3px 16px rgba(0,0,0,0.06);
-      cursor: pointer;
-      perspective: 1200px;
-      min-height: 320px;
-      position: relative;
       transition: transform 0.15s ease;
     }
     .word-card:active { transform: scale(0.985); }
-
-    .card-inner {
-      position: relative;
-      width: 100%;
-      min-height: 320px;
-      transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
-      transform-style: preserve-3d;
-    }
-    .card-inner.flipped { transform: rotateY(180deg); }
-
-    .card-front, .card-back {
-      position: absolute;
-      width: 100%;
-      min-height: 320px;
-      backface-visibility: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-    .card-back { transform: rotateY(180deg); }
-
-    .card-illustration {
-      width: 100%;
-      height: 150px;
-      position: relative;
-      overflow: hidden;
-    }
-    .card-illustration img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .card-illustration .scene {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .scene svg { width: 100%; height: 100%; }
-
-    .card-content { padding: 16px 18px; flex: 1; display: flex; flex-direction: column; }
-
-    .word-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-    .word-text { font-size: 24px; font-weight: 800; color: #1a1a2e; letter-spacing: -0.5px; }
-
+    .card-inner { padding: 20px 18px; }
+    .word-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .word-text { font-size: 26px; font-weight: 800; color: #1a1a2e; }
     .play-btn {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       background: linear-gradient(135deg, #2563eb, #3b82f6);
       border: none;
@@ -161,27 +94,10 @@
       justify-content: center;
       flex-shrink: 0;
       box-shadow: 0 2px 10px rgba(37, 99, 235, 0.3);
-      transition: transform 0.2s ease;
     }
     .play-btn:active { transform: scale(0.88); }
     .play-btn svg { width: 16px; height: 16px; fill: #fff; margin-left: 2px; }
-
-    .play-btn-sm {
-      width: 28px;
-      height: 28px;
-      min-width: 28px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #2563eb, #3b82f6);
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .play-btn-sm svg { width: 11px; height: 11px; fill: #fff; margin-left: 1px; }
-
-    .word-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+    .word-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
     .pos-tag {
       background: #eef1f6;
       color: #666;
@@ -190,85 +106,22 @@
       padding: 2px 8px;
       border-radius: 6px;
     }
-    .phonetic { font-size: 14px; color: #999; font-family: 'Lucida Sans Unicode', 'Segoe UI', sans-serif; }
-
-    .flip-hint {
-      text-align: center;
-      color: #ccc;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-top: auto;
-      padding-top: 12px;
-    }
-
-    .card-back .card-content { justify-content: center; align-items: center; text-align: center; }
-    .card-back .chinese-meaning { font-size: 24px; font-weight: 800; color: #2563eb; margin-bottom: 16px; }
-
-    .example-box {
-      background: #f8f9fc;
-      border-radius: 12px;
-      padding: 14px;
-      width: 100%;
-      text-align: left;
-    }
-    .example-en {
-      font-size: 13px;
-      color: #333;
-      line-height: 1.6;
-      margin-bottom: 5px;
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-    }
-    .example-cn { font-size: 12px; color: #999; margin-left: 36px; }
-
-    /* === QUIZ MODE === */
+    .phonetic { font-size: 14px; color: #999; font-family: 'Lucida Sans Unicode', sans-serif; }
+    .chinese-simple { font-size: 20px; font-weight: 700; color: #2563eb; margin-bottom: 10px; }
+    .example-simple { font-size: 14px; color: #333; line-height: 1.6; margin-bottom: 4px; }
+    .example-cn-simple { font-size: 13px; color: #999; }
+    /* QUIZ MODE */
     #quiz-mode { display: none; }
     #quiz-mode.active { display: block; }
-
     .quiz-progress { margin-bottom: 16px; }
-    .progress-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: #999;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-    .progress-dots {
-      display: flex;
-      gap: 4px;
-      margin-bottom: 6px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #e0e0e0;
-      transition: all 0.3s ease;
-    }
-    .dot.correct { background: #22c55e; box-shadow: 0 0 6px rgba(34,197,94,0.4); }
-    .dot.wrong { background: #ef4444; box-shadow: 0 0 6px rgba(239,68,68,0.4); }
-    .dot.current { background: #2563eb; box-shadow: 0 0 8px rgba(37,99,235,0.5); transform: scale(1.2); }
-
-    .progress-bar-bg {
-      width: 100%;
-      height: 5px;
-      background: #e0e0e0;
-      border-radius: 3px;
-      overflow: hidden;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #2563eb, #3b82f6);
-      border-radius: 3px;
-      transition: width 0.4s ease;
-    }
-
+    .progress-label { font-size: 11px; font-weight: 600; color: #999; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+    .progress-dots { display: flex; gap: 4px; margin-bottom: 8px; flex-wrap: wrap; justify-content: center; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #e0e0e0; transition: all 0.3s ease; }
+    .dot.correct { background: #22c55e; }
+    .dot.wrong { background: #ef4444; }
+    .dot.current { background: #2563eb; transform: scale(1.2); }
+    .progress-bar-bg { width: 100%; height: 5px; background: #e0e0e0; border-radius: 3px; overflow: hidden; }
+    .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #2563eb, #3b82f6); border-radius: 3px; transition: width 0.4s ease; }
     .quiz-card {
       background: #fff;
       border-radius: 20px;
@@ -276,19 +129,8 @@
       box-shadow: 0 3px 16px rgba(0,0,0,0.06);
       text-align: center;
     }
-    .quiz-chinese {
-      font-size: 28px;
-      font-weight: 800;
-      color: #1a1a2e;
-      margin-bottom: 4px;
-    }
-    .quiz-phonetic {
-      font-size: 16px;
-      color: #aaa;
-      font-family: 'Lucida Sans Unicode', 'Segoe UI', sans-serif;
-      margin-bottom: 20px;
-    }
-
+    .quiz-chinese { font-size: 28px; font-weight: 800; color: #1a1a2e; margin-bottom: 4px; }
+    .quiz-phonetic { font-size: 16px; color: #aaa; font-family: 'Lucida Sans Unicode', sans-serif; margin-bottom: 20px; }
     .quiz-input {
       width: 100%;
       padding: 12px 16px;
@@ -296,7 +138,6 @@
       border: 3px solid #e0e0e0;
       border-radius: 12px;
       outline: none;
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
       text-align: center;
       font-weight: 600;
       letter-spacing: 1px;
@@ -304,14 +145,8 @@
       -webkit-appearance: none;
     }
     .quiz-input:focus { border-color: #2563eb; box-shadow: 0 0 0 4px rgba(37,99,235,0.1); }
-    .quiz-input.correct { border-color: #22c55e; box-shadow: 0 0 0 4px rgba(34,197,94,0.12); background: #f0fdf4; }
-    .quiz-input.wrong {
-      border-color: #ef4444;
-      box-shadow: 0 0 0 4px rgba(239,68,68,0.12);
-      background: #fef2f2;
-      animation: shake 0.5s ease;
-    }
-
+    .quiz-input.correct { border-color: #22c55e; background: #f0fdf4; }
+    .quiz-input.wrong { border-color: #ef4444; background: #fef2f2; animation: shake 0.5s ease; }
     @keyframes shake {
       0%,100% { transform: translateX(0); }
       20% { transform: translateX(-8px); }
@@ -319,7 +154,6 @@
       60% { transform: translateX(-6px); }
       80% { transform: translateX(6px); }
     }
-
     .submit-btn {
       width: 100%;
       padding: 13px;
@@ -332,17 +166,12 @@
       border-radius: 12px;
       cursor: pointer;
       box-shadow: 0 5px 18px rgba(37,99,235,0.3);
-      transition: all 0.25s ease;
       text-transform: uppercase;
-      -webkit-user-select: none;
-      user-select: none;
     }
     .submit-btn:active { transform: scale(0.97); }
-
     .feedback-msg { margin-top: 12px; font-size: 13px; font-weight: 600; min-height: 18px; }
     .feedback-msg.correct { color: #22c55e; }
     .feedback-msg.wrong { color: #ef4444; }
-
     .hint-btn {
       margin-top: 8px;
       padding: 6px 16px;
@@ -354,13 +183,11 @@
       cursor: pointer;
       font-weight: 600;
     }
-    .hint-btn:active { border-color: #2563eb; color: #2563eb; }
     .hint-text { margin-top: 4px; font-size: 16px; color: #2563eb; font-weight: 700; letter-spacing: 2px; }
-
-    /* === RESULTS === */
-    #results-screen { display: none; text-align: center; padding: 30px 16px; }
-    #results-screen.active { display: block; }
-    .results-card {
+    /* RESULTS */
+    #results-screen, #name-screen, #checkin-screen { display: none; text-align: center; padding: 30px 16px; }
+    #results-screen.active, #name-screen.active, #checkin-screen.active { display: block; }
+    .results-card, .name-card {
       background: #fff;
       border-radius: 20px;
       padding: 30px 18px;
@@ -383,17 +210,6 @@
       text-transform: uppercase;
       letter-spacing: 1px;
     }
-    .restart-btn:active { transform: scale(0.95); }
-
-    /* === NAME INPUT === */
-    #name-screen { display: none; text-align: center; padding: 30px 16px; }
-    #name-screen.active { display: block; }
-    .name-card {
-      background: #fff;
-      border-radius: 20px;
-      padding: 30px 18px;
-      box-shadow: 0 3px 16px rgba(0,0,0,0.06);
-    }
     .name-card h2 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
     .name-card p { font-size: 13px; color: #888; margin-bottom: 20px; }
     .name-input {
@@ -409,10 +225,6 @@
       -webkit-appearance: none;
     }
     .name-input:focus { border-color: #2563eb; box-shadow: 0 0 0 4px rgba(37,99,235,0.1); }
-
-    /* === CHECK-IN SUCCESS === */
-    #checkin-screen { display: none; text-align: center; padding: 30px 16px; }
-    #checkin-screen.active { display: block; }
     .checkin-card {
       background: linear-gradient(135deg, #2563eb, #7c3aed);
       border-radius: 20px;
@@ -422,7 +234,7 @@
     }
     .checkin-icon { font-size: 64px; margin-bottom: 16px; }
     .checkin-title { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
-    .checkin-name { font-size: 28px; font-weight: 800; margin: 12px 0; text-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+    .checkin-name { font-size: 28px; font-weight: 800; margin: 12px 0; }
     .checkin-score { font-size: 16px; opacity: 0.9; margin-bottom: 8px; }
     .checkin-detail { font-size: 13px; opacity: 0.7; margin-bottom: 24px; }
     .checkin-btn {
@@ -437,41 +249,20 @@
       text-transform: uppercase;
       letter-spacing: 1px;
     }
-    .checkin-btn:active { transform: scale(0.95); }
-
+    .fade-in { animation: fadeInUp 0.4s ease forwards; }
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(18px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .fade-in { animation: fadeInUp 0.4s ease forwards; }
-
-    @keyframes confetti {
-      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(-200px) rotate(720deg); opacity: 0; }
-    }
-
-    /* === MOBILE RESPONSIVE === */
     @media (max-width: 380px) {
       .header h1 { font-size: 19px; }
       .tab-btn { padding: 7px 22px; font-size: 12px; }
       .word-text { font-size: 20px; }
       .quiz-chinese { font-size: 24px; }
-      .card-illustration { height: 130px; }
-    }
-
-    @media (min-width: 600px) {
-      .container { padding: 22px 16px 100px; }
-      .header h1 { font-size: 26px; }
-    }
-
-    /* Safe area for phones with notch */
-    @supports (padding-bottom: env(safe-area-inset-bottom)) {
-      .container { padding-bottom: calc(100px + env(safe-area-inset-bottom)); }
     }
   </style>
 </head>
 <body>
-
   <div class="header">
     <h1>Vocabulary Collection</h1>
     <p class="subtitle" id="word-count"></p>
@@ -480,30 +271,24 @@
       <button class="tab-btn" id="tab-quiz" onclick="switchTab('quiz')">QUIZ</button>
     </div>
   </div>
-
   <div class="container">
-    <!-- STUDY MODE -->
     <div id="study-mode"></div>
-
-    <!-- QUIZ MODE -->
     <div id="quiz-mode">
       <div class="quiz-progress">
         <div class="progress-label" id="progress-label"></div>
         <div class="progress-dots" id="progress-dots"></div>
         <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-bar"></div></div>
       </div>
-      <div class="quiz-card" id="quiz-card">
+      <div class="quiz-card">
         <div class="quiz-chinese" id="quiz-chinese"></div>
         <div class="quiz-phonetic" id="quiz-phonetic"></div>
-        <input type="text" class="quiz-input" id="quiz-input" placeholder="Type the word..." autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="text">
+        <input type="text" class="quiz-input" id="quiz-input" placeholder="Type the word..." autocomplete="off" autocapitalize="off" spellcheck="false">
         <button class="submit-btn" id="submit-btn" onclick="submitAnswer()">SUBMIT ANSWER</button>
         <div class="feedback-msg" id="feedback-msg"></div>
-        <button class="hint-btn" id="hint-btn" onclick="showHint()"> Show Hint</button>
+        <button class="hint-btn" id="hint-btn" onclick="showHint()">💡 Show Hint</button>
         <div class="hint-text" id="hint-text"></div>
       </div>
     </div>
-
-    <!-- RESULTS SCREEN -->
     <div id="results-screen">
       <div class="results-card">
         <div class="results-emoji" id="results-emoji"></div>
@@ -514,18 +299,14 @@
         <button class="restart-btn" onclick="restartQuiz()">TRY AGAIN</button>
       </div>
     </div>
-
-    <!-- NAME INPUT SCREEN -->
     <div id="name-screen">
       <div class="name-card">
         <h2>📝 输入你的姓名</h2>
         <p>完成后提交即可打卡</p>
-        <input type="text" class="name-input" id="name-input" placeholder="请输入姓名" inputmode="text" maxlength="20">
+        <input type="text" class="name-input" id="name-input" placeholder="请输入姓名" maxlength="20">
         <button class="submit-btn" onclick="submitCheckin()">确认提交</button>
       </div>
     </div>
-
-    <!-- CHECK-IN SUCCESS SCREEN -->
     <div id="checkin-screen">
       <div class="checkin-card">
         <div class="checkin-icon">🎉</div>
@@ -537,60 +318,48 @@
       </div>
     </div>
   </div>
-
   <script>
-    const WORDS = [
-      { word:"bear", pos:"n.", phonetic:"/beə(r)/", meaning:"熊", example:"The bear caught a fish from the river.", exampleCn:"那只熊从河里抓了一条鱼。", colors:["#8B4513","#CD853F","#DEB887"], emoji:"🐻" },
-      { word:"black", pos:"adj.", phonetic:"/blæk/", meaning:"黑色的", example:"She wore a black coat in winter.", exampleCn:"她冬天穿了一件黑色外套。", colors:["#374151","#4B5563","#6B7280"], emoji:"⬛" },
-      { word:"grizzly", pos:"n.", phonetic:"/ˈɡrɪzli/", meaning:"灰熊", example:"Grizzly bears live in the mountains of North America.", exampleCn:"灰熊生活在北美洲的山区。", colors:["#6B7280","#9CA3AF","#D1D5DB"], emoji:"🐻‍❄️" },
-      { word:"brown", pos:"adj.", phonetic:"/bran/", meaning:"棕色的", example:"The dog has beautiful brown eyes.", exampleCn:"那只狗有一双漂亮的棕色眼睛。", colors:["#92400E","#B45309","#D97706"], emoji:"" },
-      { word:"blonde", pos:"adj.", phonetic:"/blɒnd/", meaning:"金色的，浅黄色的", example:"She has long blonde hair.", exampleCn:"她有一头金色的长发。", colors:["#F59E0B","#FBBF24","#FCD34D"], emoji:"💛" },
-      { word:"intelligent", pos:"adj.", phonetic:"/nˈtelɪdʒənt/", meaning:"聪明的", example:"Dolphins are highly intelligent animals.", exampleCn:"海豚是非常聪明的动物。", colors:["#7C3AED","#8B5CF6","#A78BFA"], emoji:"" },
-      { word:"curious", pos:"adj.", phonetic:"/ˈkjʊəriəs/", meaning:"好奇的", example:"The cat was curious about the new toy.", exampleCn:"那只猫对新玩具很好奇。", colors:["#0891B2","#06B6D4","#22D3EE"], emoji:"🔍" },
-      { word:"belong to", pos:"phr.", phonetic:"/bɪˈlɒ tuː/", meaning:"属于", example:"This book belongs to me.", exampleCn:"这本书属于我。", colors:["#059669","#10B981","#34D399"], emoji:"🏷️" },
-      { word:"area", pos:"n.", phonetic:"/ˈeəriə/", meaning:"区域，地方", example:"This area is known for its beautiful scenery.", exampleCn:"这个地区以其美丽的风景而闻名。", colors:["#2563EB","#3B82F6","#60A5FA"], emoji:"🗺️" },
-      { word:"hurt", pos:"v.", phonetic:"/hɜːt/", meaning:"伤害", example:"Be careful not to hurt yourself.", exampleCn:"小心别伤到自己。", colors:["#DC2626","#EF4444","#F87171"], emoji:"💔" },
-      { word:"African", pos:"adj.", phonetic:"/ˈæfrɪkən/", meaning:"非洲的", example:"African elephants are the largest land animals.", exampleCn:"非洲象是最大的陆地动物。", colors:["#D97706","#F59E0B","#FCD34D"], emoji:"🌍" },
-      { word:"Asian", pos:"adj.", phonetic:"/eɪʒn/", meaning:"亚洲的", example:"Asian culture has a long and rich history.", exampleCn:"亚洲文化有着悠久而丰富的历史。", colors:["#E11D48","#F43F5E","#FB7185"], emoji:"🏯" },
-      { word:"on the other hand", pos:"phr.", phonetic:"/ɒn ði ˈʌðə hænd/", meaning:"另一方面", example:"The job pays well. On the other hand, it requires long hours.", exampleCn:"这份工作薪水不错，但另一方面，它需要长时间工作。", colors:["#6366F1","#818CF8","#A5B4FC"], emoji:"🔄" },
-      { word:"in the same way", pos:"phr.", phonetic:"/n ðə seɪm weɪ/", meaning:"同样地", example:"She solved the problem in the same way as her teacher.", exampleCn:"她用和老师同样的方式解决了这个问题。", colors:["#0D9488","#14B8A6","#2DD4BF"], emoji:"" },
-      { word:"similarity", pos:"n.", phonetic:"/ˌsɪməˈlærəti/", meaning:"相似点", example:"There are many similarities between the two languages.", exampleCn:"这两种语言有很多相似之处。", colors:["#4F46E5","#6366F1","#818CF8"], emoji:"" },
-      { word:"difference", pos:"n.", phonetic:"/ˈdɪfrəns/", meaning:"不同点", example:"Can you tell the difference between these two pictures?", exampleCn:"你能分辨出这两张图片的不同之处吗？", colors:["#C026D3","#D946EF","#E879F9"], emoji:"" },
-      { word:"lead", pos:"v.", phonetic:"/liːd/", meaning:"带领，领导", example:"She will lead the team to victory.", exampleCn:"她将带领团队走向胜利。", colors:["#B91C1C","#DC2626","#EF4444"], emoji:"" },
-      { word:"characteristic", pos:"n.", phonetic:"/ˌkærəktəˈrɪstɪk/", meaning:"特征，特点", example:"One characteristic of cats is their independence.", exampleCn:"猫的一个特征是它们的独立性。", colors:["#7E22CE","#9333EA","#A855F7"], emoji:"✨" },
-      { word:"dangerous", pos:"adj.", phonetic:"/deɪndʒərəs/", meaning:"危险的", example:"It is dangerous to swim in the river at night.", exampleCn:"晚上在河里游泳很危险。", colors:["#DC2626","#EF4444","#F87171"], emoji:"" },
-      { word:"human", pos:"n.", phonetic:"/ˈhjuːmən/", meaning:"人，人类", example:"Humans have lived on Earth for thousands of years.", exampleCn:"人类已经在地球上生活了数千年。", colors:["#0284C7","#0EA5E9","#38BDF8"], emoji:"" },
-      { word:"tuna", pos:"n.", phonetic:"/ˈtjunə/", meaning:"金枪鱼", example:"I had a tuna sandwich for lunch.", exampleCn:"我午餐吃了一个金枪鱼三明治。", colors:["#1E40AF","#2563EB","#3B82F6"], emoji:"" },
-      { word:"dolphin", pos:"n.", phonetic:"/ˈdlfɪn/", meaning:"海豚", example:"The dolphin jumped out of the water gracefully.", exampleCn:"海豚优雅地跃出水面。", colors:["#0284C7","#0EA5E9","#7DD3FC"], emoji:"" },
-      { word:"turtle", pos:"n.", phonetic:"/ˈtɜtl/", meaning:"海龟", example:"Sea turtles travel thousands of miles to lay their eggs.", exampleCn:"海龟跋涉数千英里去产卵。", colors:["#047857","#059669","#34D399"], emoji:"🐢" },
-      { word:"report", pos:"n.", phonetic:"/rɪˈpɔːt/", meaning:"报告，报道", example:"The weather report says it will rain tomorrow.", exampleCn:"天气预报说明天会下雨。", colors:["#1D4ED8","#2563EB","#60A5FA"], emoji:"📰" },
-      { word:"attack", pos:"n.", phonetic:"/əˈtæk/", meaning:"攻击", example:"The lion made a sudden attack on the zebra.", exampleCn:"狮子突然对斑马发起了攻击。", colors:["#B91C1C","#DC2626","#FCA5A5"], emoji:"️" },
-      { word:"record", pos:"v.", phonetic:"/rɪkɔːd/", meaning:"记录", example:"Scientists record data about animal behavior.", exampleCn:"科学家记录关于动物行为的数据。", colors:["#0369A1","#0284C7","#38BDF8"], emoji:"" },
-      { word:"ocean", pos:"n.", phonetic:"/ˈəʊʃn/", meaning:"海洋", example:"The ocean covers more than 70 percent of Earth's surface.", exampleCn:"海洋覆盖了地球表面70%以上的面积。", colors:["#0C4A6E","#0E7490","#22D3EE"], emoji:"" }
+    var WORDS = [
+      {word:"bear",pos:"n.",phonetic:"/beə(r)/",meaning:"熊",example:"The bear caught a fish from the river.",exampleCn:"那只熊从河里抓了一条鱼。"},
+      {word:"black",pos:"adj.",phonetic:"/blæk/",meaning:"黑色的",example:"She wore a black coat in winter.",exampleCn:"她冬天穿了一件黑色外套。"},
+      {word:"grizzly",pos:"n.",phonetic:"/ˈɡrɪzli/",meaning:"灰熊",example:"Grizzly bears live in the mountains of North America.",exampleCn:"灰熊生活在北美洲的山区。"},
+      {word:"brown",pos:"adj.",phonetic:"/braʊn/",meaning:"棕色的",example:"The dog has beautiful brown eyes.",exampleCn:"那只狗有一双漂亮的棕色眼睛。"},
+      {word:"blonde",pos:"adj.",phonetic:"/blɒnd/",meaning:"金色的，浅黄色的",example:"She has long blonde hair.",exampleCn:"她有一头金色的长发。"},
+      {word:"intelligent",pos:"adj.",phonetic:"/nˈtelɪdʒənt/",meaning:"聪明的",example:"Dolphins are highly intelligent animals.",exampleCn:"海豚是非常聪明的动物。"},
+      {word:"curious",pos:"adj.",phonetic:"/ˈkjʊəriəs/",meaning:"好奇的",example:"The cat was curious about the new toy.",exampleCn:"那只猫对新玩具很好奇。"},
+      {word:"belong to",pos:"phr.",phonetic:"/bɪˈlɒŋ tuː/",meaning:"属于",example:"This book belongs to me.",exampleCn:"这本书属于我。"},
+      {word:"area",pos:"n.",phonetic:"/ˈeəriə/",meaning:"区域，地方",example:"This area is known for its beautiful scenery.",exampleCn:"这个地区以其美丽的风景而闻名。"},
+      {word:"hurt",pos:"v.",phonetic:"/hɜːt/",meaning:"伤害",example:"Be careful not to hurt yourself.",exampleCn:"小心别伤到自己。"},
+      {word:"African",pos:"adj.",phonetic:"/ˈæfrɪkən/",meaning:"非洲的",example:"African elephants are the largest land animals.",exampleCn:"非洲象是最大的陆地动物。"},
+      {word:"Asian",pos:"adj.",phonetic:"/ˈeɪʃn/",meaning:"亚洲的",example:"Asian culture has a long and rich history.",exampleCn:"亚洲文化有着悠久而丰富的历史。"},
+      {word:"on the other hand",pos:"phr.",phonetic:"/ɒn ði ˈʌðə hænd/",meaning:"另一方面",example:"The job pays well. On the other hand, it requires long hours.",exampleCn:"这份工作薪水不错，但另一方面，它需要长时间工作。"},
+      {word:"in the same way",pos:"phr.",phonetic:"/ɪn ðə sem weɪ/",meaning:"同样地",example:"She solved the problem in the same way as her teacher.",exampleCn:"她用和老师同样的方式解决了这个问题。"},
+      {word:"similarity",pos:"n.",phonetic:"/ˌsɪməˈlærəti/",meaning:"相似点",example:"There are many similarities between the two languages.",exampleCn:"这两种语言有很多相似之处。"},
+      {word:"difference",pos:"n.",phonetic:"/ˈdɪfrəns/",meaning:"不同点",example:"Can you tell the difference between these two pictures?",exampleCn:"你能分辨出这两张图片的不同之处吗？"},
+      {word:"lead",pos:"v.",phonetic:"/liːd/",meaning:"带领，领导",example:"She will lead the team to victory.",exampleCn:"她将带领团队走向胜利。"},
+      {word:"characteristic",pos:"n.",phonetic:"/ˌkærəktəˈrɪstɪk/",meaning:"特征，特点",example:"One characteristic of cats is their independence.",exampleCn:"猫的一个特征是它们的独立性。"},
+      {word:"dangerous",pos:"adj.",phonetic:"/ˈdeɪndʒərəs/",meaning:"危险的",example:"It is dangerous to swim in the river at night.",exampleCn:"晚上在河里游泳很危险。"},
+      {word:"human",pos:"n.",phonetic:"/ˈhjuːmən/",meaning:"人，人类",example:"Humans have lived on Earth for thousands of years.",exampleCn:"人类已经在地球上生活了数千年。"},
+      {word:"tuna",pos:"n.",phonetic:"/ˈtjuːnə/",meaning:"金枪鱼",example:"I had a tuna sandwich for lunch.",exampleCn:"我午餐吃了一个金枪鱼三明治。"},
+      {word:"dolphin",pos:"n.",phonetic:"/ˈdɒlfɪn/",meaning:"海豚",example:"The dolphin jumped out of the water gracefully.",exampleCn:"海豚优雅地跃出水面。"},
+      {word:"turtle",pos:"n.",phonetic:"/ˈtɜːtl/",meaning:"海龟",example:"Sea turtles travel thousands of miles to lay their eggs.",exampleCn:"海龟跋涉数千英里去产卵。"},
+      {word:"report",pos:"n.",phonetic:"/rɪpɔːt/",meaning:"报告，报道",example:"The weather report says it will rain tomorrow.",exampleCn:"天气预报说明天会下雨。"},
+      {word:"attack",pos:"n.",phonetic:"/əˈtæk/",meaning:"攻击",example:"The lion made a sudden attack on the zebra.",exampleCn:"狮子突然对斑马发起了攻击。"},
+      {word:"record",pos:"v.",phonetic:"/rɪˈkɔːd/",meaning:"记录",example:"Scientists record data about animal behavior.",exampleCn:"科学家记录关于动物行为的数据。"},
+      {word:"ocean",pos:"n.",phonetic:"/ˈəʊʃn/",meaning:"海洋",example:"The ocean covers more than 70 percent of Earth's surface.",exampleCn:"海洋覆盖了地球表面70%以上的面积。"}
     ];
 
-    let currentTab = 'study';
-    let currentQuizIndex = 0;
-    let quizResults = [];
-    let answered = false;
-    let wordImages = {};
+    var currentTab = 'study';
+    var currentQuizIndex = 0;
+    var quizResults = [];
+    var answered = false;
+    var quizStarted = false;
 
-    async function init() {
+    function init() {
       document.getElementById('word-count').textContent = WORDS.length + ' Words';
       renderStudyCards();
       renderQuiz();
-      // Load images in background (won't block rendering)
-      try {
-        const resp = await fetch('images.json');
-        wordImages = await resp.json();
-        console.log('Loaded ' + Object.keys(wordImages).length + ' images');
-        renderStudyCards(); // Re-render with images
-      } catch (e) {
-        console.log('Using SVG illustrations');
-      }
     }
-
-    let quizStarted = false;
 
     function switchTab(tab) {
       currentTab = tab;
@@ -602,316 +371,145 @@
       document.getElementById('results-screen').classList.remove('active');
       document.getElementById('name-screen').classList.remove('active');
       document.getElementById('checkin-screen').classList.remove('active');
-
       if (tab === 'quiz') {
-        if (!quizStarted) {
-          quizStarted = true;
-          restartQuiz();
-        } else {
-          document.getElementById('quiz-mode').style.display = 'block';
-          showQuizWord();
-        }
+        if (!quizStarted) { quizStarted = true; restartQuiz(); }
+        else { document.getElementById('quiz-mode').style.display = 'block'; showQuizWord(); }
       }
     }
 
-    /* ===== RENDER STUDY CARDS ===== */
     function renderStudyCards() {
-      const container = document.getElementById('study-mode');
+      var container = document.getElementById('study-mode');
       container.innerHTML = '';
-      WORDS.forEach((w, i) => {
-        const card = document.createElement('div');
+      WORDS.forEach(function(w, i) {
+        var card = document.createElement('div');
         card.className = 'word-card fade-in';
-        card.style.animationDelay = `${i * 0.06}s`;
+        card.style.animationDelay = (i * 0.06) + 's';
         card.style.opacity = '0';
-
-        const imgSrc = wordImages[w.word] ? `data:image/png;base64,${wordImages[w.word]}` : null;
-
-        card.innerHTML = `
-          <div class="card-inner" id="card-${i}">
-            <div class="card-front">
-              <div class="card-illustration">
-                <div class="scene" style="background:linear-gradient(135deg,${w.colors[0]}12,${w.colors[1]}18);">
-                  ${imgSrc
-                    ? `<img src="${imgSrc}" alt="${w.word}" loading="lazy">`
-                    : genIll(w, i)}
-                </div>
-              </div>
-              <div class="card-content">
-                <div class="word-row">
-                  <span class="word-text">${w.word}</span>
-                  <button class="play-btn" data-audio="word" data-idx="${i}">
-                    <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
-                  </button>
-                </div>
-                <div class="word-meta">
-                  <span class="pos-tag">${w.pos}</span>
-                  <span class="phonetic">${w.phonetic}</span>
-                </div>
-                <div class="flip-hint">CLICK TO FLIP</div>
-              </div>
-            </div>
-            <div class="card-back">
-              <div class="card-illustration">
-                <div class="scene" style="background:linear-gradient(135deg,${w.colors[0]}15,${w.colors[1]}20);">
-                  ${imgSrc
-                    ? `<img src="${imgSrc}" alt="${w.word}" loading="lazy" style="filter:brightness(0.85);">`
-                    : genBackSVG(w, i)}
-                </div>
-              </div>
-              <div class="card-content">
-                <div class="chinese-meaning">${w.meaning}</div>
-                <div class="example-box">
-                  <div class="example-en">
-                    <button class="play-btn-sm" data-audio="example" data-idx="${i}">
-                      <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
-                    </button>
-                    <span>"${w.example}"</span>
-                  </div>
-                  <div class="example-cn">${w.exampleCn}</div>
-                </div>
-                <div class="flip-hint">CLICK TO RETURN</div>
-              </div>
-            </div>
-          </div>`;
-
-        // Word play button
-        card.querySelector('[data-audio="word"]').addEventListener('click', (e) => {
+        card.innerHTML = '<div class="card-inner">' +
+          '<div class="word-row"><span class="word-text">' + w.word + '</span>' +
+          '<button class="play-btn" data-idx="' + i + '"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>' +
+          '<div class="word-meta"><span class="pos-tag">' + w.pos + '</span>' +
+          '<span class="phonetic">' + w.phonetic + '</span></div>' +
+          '<div class="chinese-simple">' + w.meaning + '</div>' +
+          '<div class="example-simple">"' + w.example + '"</div>' +
+          '<div class="example-cn-simple">' + w.exampleCn + '</div></div>';
+        card.querySelector('.play-btn').addEventListener('click', function(e) {
           e.stopPropagation();
           speakWord(WORDS[i].word);
-        });
-        // Example play button
-        card.querySelector('[data-audio="example"]').addEventListener('click', (e) => {
-          e.stopPropagation();
-          speakSentence(WORDS[i].example);
-        });
-        // Card flip
-        card.addEventListener('click', (e) => {
-          if (e.target.closest('button')) return;
-          document.getElementById(`card-${i}`).classList.toggle('flipped');
         });
         container.appendChild(card);
       });
     }
 
-    /* ===== SVG ILLUSTRATIONS ===== */
-    function genIll(w, i) {
-      const c = w.colors;
-      const map = {
-        'bear': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fef3e2"/><stop offset="100%" stop-color="#f5e6d0"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><ellipse cx="100" cy="130" rx="60" ry="15" fill="#e8d5b7" opacity="0.5"/><circle cx="100" cy="72" r="38" fill="#8B6914"/><circle cx="72" cy="42" r="16" fill="#8B6914"/><circle cx="128" cy="42" r="16" fill="#8B6914"/><circle cx="72" cy="42" r="10" fill="#C4956A"/><circle cx="128" cy="42" r="10" fill="#C4956A"/><ellipse cx="100" cy="78" rx="22" ry="18" fill="#C4956A"/><circle cx="88" cy="66" r="5" fill="#2d1810"/><circle cx="112" cy="66" r="5" fill="#2d1810"/><circle cx="87" cy="64" r="2" fill="#fff" opacity="0.8"/><circle cx="111" cy="64" r="2" fill="#fff" opacity="0.8"/><ellipse cx="100" cy="76" rx="6" ry="4" fill="#2d1810"/><path d="M94,80 Q100,86 106,80" fill="none" stroke="#2d1810" stroke-width="1.5" stroke-linecap="round"/><circle cx="78" cy="78" r="6" fill="#e8a0a0" opacity="0.4"/><circle cx="122" cy="78" r="6" fill="#e8a0a0" opacity="0.4"/></svg>`,
-        'black': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8e8f0"/><stop offset="100%" stop-color="#d0d0dc"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><circle cx="65" cy="65" r="35" fill="#1a1a2e"/><rect x="105" y="35" width="55" height="55" rx="10" fill="#1a1a2e"/><polygon points="132,140 105,95 160,95" fill="#1a1a2e"/><circle cx="65" cy="65" r="8" fill="#333" opacity="0.3"/><rect x="105" y="35" width="55" height="55" rx="10" fill="none" stroke="#333" stroke-width="1" opacity="0.2"/></svg>`,
-        'grizzly': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8e4e0"/><stop offset="100%" stop-color="#d8d0c8"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><polygon points="15,145 55,75 100,100 145,65 185,145" fill="#7a6b5d" opacity="0.3"/><circle cx="100" cy="68" r="35" fill="#6b5b4d"/><circle cx="74" cy="40" r="14" fill="#6b5b4d"/><circle cx="126" cy="40" r="14" fill="#6b5b4d"/><circle cx="74" cy="40" r="8" fill="#8a7a6c"/><circle cx="126" cy="40" r="8" fill="#8a7a6c"/><ellipse cx="100" cy="74" rx="20" ry="16" fill="#8a7a6c"/><circle cx="89" cy="62" r="4" fill="#2d1810"/><circle cx="111" cy="62" r="4" fill="#2d1810"/><ellipse cx="100" cy="72" rx="5" ry="3.5" fill="#2d1810"/><path d="M95,76 Q100,80 105,76" fill="none" stroke="#2d1810" stroke-width="1.2"/><line x1="78" y1="68" x2="68" y2="66" stroke="#6b5b4d" stroke-width="1.5" opacity="0.5"/><line x1="122" y1="68" x2="132" y2="66" stroke="#6b5b4d" stroke-width="1.5" opacity="0.5"/></svg>`,
-        'brown': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f5ebe0"/><stop offset="100%" stop-color="#e8d5c0"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><circle cx="100" cy="75" r="40" fill="#92400E" opacity="0.15"/><circle cx="100" cy="75" r="30" fill="#B45309" opacity="0.2"/><ellipse cx="80" cy="60" rx="25" ry="20" fill="#D97706" opacity="0.3"/><ellipse cx="125" cy="85" rx="20" ry="18" fill="#92400E" opacity="0.2"/><circle cx="100" cy="75" r="12" fill="#B45309" opacity="0.4"/><text x="100" y="148" text-anchor="middle" font-size="12" fill="#92400E" opacity="0.4" font-weight="600" font-family="sans-serif">COLORS</text></svg>`,
-        'blonde': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fef9e7"/><stop offset="100%" stop-color="#fdf0d0"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><circle cx="100" cy="55" r="32" fill="#FCD34D" opacity="0.2"/><path d="M70,55 Q75,25 100,20 Q125,25 130,55" fill="#F59E0B" opacity="0.3" stroke="#F59E0B" stroke-width="1.5"/><path d="M75,65 Q80,40 100,35 Q120,40 125,65" fill="#FBBF24" opacity="0.25"/><ellipse cx="100" cy="65" rx="18" ry="14" fill="#FDE68A" opacity="0.4"/><circle cx="100" cy="65" r="6" fill="#F59E0B" opacity="0.3"/><path d="M85,95 Q90,80 100,78 Q110,80 115,95" fill="#F59E0B" opacity="0.2"/></svg>`,
-        'intelligent': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f0e8ff"/><stop offset="100%" stop-color="#e0d0f8"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><circle cx="100" cy="60" r="30" fill="#7C3AED" opacity="0.15" stroke="#7C3AED" stroke-width="1.5"/><circle cx="100" cy="60" r="18" fill="#8B5CF6" opacity="0.2"/><path d="M90,55 L96,63 L110,48" fill="none" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round"/><circle cx="75" cy="40" r="4" fill="#A78BFA" opacity="0.5"/><circle cx="130" cy="45" r="3" fill="#8B5CF6" opacity="0.4"/><circle cx="68" cy="80" r="3" fill="#A78BFA" opacity="0.4"/><circle cx="135" cy="75" r="4" fill="#8B5CF6" opacity="0.3"/><circle cx="85" cy="95" r="3" fill="#A78BFA" opacity="0.3"/><circle cx="120" cy="90" r="3" fill="#8B5CF6" opacity="0.3"/><line x1="82" y1="50" x2="88" y2="55" stroke="#8B5CF6" stroke-width="1" opacity="0.3"/><line x1="112" y1="50" x2="118" y2="55" stroke="#8B5CF6" stroke-width="1" opacity="0.3"/></svg>`,
-        'curious': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e0f7fa"/><stop offset="100%" stop-color="#b2ebf2"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><circle cx="100" cy="70" r="40" fill="#0891B2" opacity="0.08" stroke="#0891B2" stroke-width="1.5" stroke-dasharray="6,4"/><text x="100" y="85" text-anchor="middle" font-size="60" fill="#0891B2" opacity="0.35" font-weight="bold" font-family="sans-serif">?</text><circle cx="60" cy="45" r="3" fill="#06B6D4" opacity="0.4"/><circle cx="145" cy="50" r="2.5" fill="#0891B2" opacity="0.3"/><circle cx="55" cy="100" r="2" fill="#06B6D4" opacity="0.3"/><circle cx="148" cy="95" r="3" fill="#0891B2" opacity="0.3"/></svg>`,
-        'belong to': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ecfdf5"/><stop offset="100%" stop-color="#d1fae5"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><rect x="55" y="35" width="90" height="65" rx="10" fill="#fff" stroke="#059669" stroke-width="2" opacity="0.7"/><rect x="70" y="48" width="60" height="10" rx="5" fill="#059669" opacity="0.3"/><text x="100" y="75" text-anchor="middle" font-size="13" fill="#059669" font-weight="600" font-family="sans-serif">BELONGS TO</text><circle cx="75" cy="85" r="8" fill="#059669" opacity="0.2"/><circle cx="125" cy="85" r="8" fill="#059669" opacity="0.2"/><line x1="83" y1="85" x2="117" y2="85" stroke="#059669" stroke-width="1.5" opacity="0.3" stroke-dasharray="3,2"/></svg>`,
-        'area': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e0f0ff"/><stop offset="100%" stop-color="#c8e0ff"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><rect x="30" y="25" width="140" height="100" rx="8" fill="#fff" stroke="#2563EB" stroke-width="1.5" opacity="0.6"/><circle cx="65" cy="60" r="18" fill="#3B82F6" opacity="0.2"/><circle cx="130" cy="80" r="22" fill="#60A5FA" opacity="0.15"/><rect x="95" y="45" width="30" height="30" rx="4" fill="#2563EB" opacity="0.15"/><line x1="30" y1="130" x2="170" y2="130" stroke="#2563EB" stroke-width="1" opacity="0.2"/></svg>`,
-        'hurt': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fef2f2"/><stop offset="100%" stop-color="#fecaca"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><path d="M75,55 Q100,95 125,55" fill="none" stroke="#DC2626" stroke-width="4" stroke-linecap="round" opacity="0.5"/><line x1="100" y1="72" x2="100" y2="100" stroke="#DC2626" stroke-width="4" stroke-linecap="round" opacity="0.5"/><path d="M88,105 Q100,118 112,105" fill="none" stroke="#DC2626" stroke-width="3" stroke-linecap="round" opacity="0.35"/></svg>`,
-        'African': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fef3c7"/><stop offset="100%" stop-color="#fde68a"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><ellipse cx="100" cy="72" rx="42" ry="52" fill="#D97706" opacity="0.25"/><ellipse cx="100" cy="62" rx="32" ry="38" fill="#F59E0B" opacity="0.2"/><circle cx="82" cy="52" r="6" fill="#D97706" opacity="0.25"/><circle cx="118" cy="78" r="5" fill="#F59E0B" opacity="0.2"/><ellipse cx="100" cy="130" rx="50" ry="10" fill="#D97706" opacity="0.1"/></svg>`,
-        'Asian': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff1f2"/><stop offset="100%" stop-color="#fecdd3"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><rect x="72" y="25" width="56" height="80" rx="4" fill="#fff" stroke="#E11D48" stroke-width="1.5" opacity="0.5"/><polygon points="100,15 82,38 118,38" fill="#E11D48" opacity="0.35"/><rect x="86" y="50" width="12" height="18" rx="6" fill="#E11D48" opacity="0.2"/><rect x="104" y="50" width="12" height="18" rx="6" fill="#E11D48" opacity="0.2"/><rect x="90" y="75" width="20" height="25" rx="2" fill="#E11D48" opacity="0.15"/></svg>`,
-        'on the other hand': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8e0ff"/><stop offset="100%" stop-color="#d0c0ff"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><circle cx="60" cy="65" r="28" fill="#6366F1" opacity="0.2"/><circle cx="140" cy="65" r="28" fill="#818CF8" opacity="0.2"/><path d="M88,65 L112,65" stroke="#6366F1" stroke-width="2" stroke-dasharray="4,3" opacity="0.5"/><polygon points="108,60 118,65 108,70" fill="#6366F1" opacity="0.4"/><polygon points="92,60 82,65 92,70" fill="#818CF8" opacity="0.4"/><text x="60" y="115" text-anchor="middle" font-size="10" fill="#6366F1" opacity="0.4" font-weight="600" font-family="sans-serif">ONE SIDE</text><text x="140" y="115" text-anchor="middle" font-size="10" fill="#818CF8" opacity="0.4" font-weight="600" font-family="sans-serif">OTHER SIDE</text></svg>`,
-        'in the same way': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e0f7f5"/><stop offset="100%" stop-color="#b2f0ec"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><line x1="40" y1="50" x2="160" y2="50" stroke="#0D9488" stroke-width="3" opacity="0.35" stroke-linecap="round"/><line x1="40" y1="78" x2="160" y2="78" stroke="#14B8A6" stroke-width="3" opacity="0.35" stroke-linecap="round"/><line x1="40" y1="106" x2="160" y2="106" stroke="#0D9488" stroke-width="3" opacity="0.35" stroke-linecap="round"/><circle cx="40" cy="50" r="5" fill="#0D9488" opacity="0.4"/><circle cx="40" cy="78" r="5" fill="#14B8A6" opacity="0.4"/><circle cx="40" cy="106" r="5" fill="#0D9488" opacity="0.4"/><circle cx="160" cy="50" r="5" fill="#0D9488" opacity="0.4"/><circle cx="160" cy="78" r="5" fill="#14B8A6" opacity="0.4"/><circle cx="160" cy="106" r="5" fill="#0D9488" opacity="0.4"/></svg>`,
-        'similarity': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8e0ff"/><stop offset="100%" stop-color="#d0c0ff"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><circle cx="78" cy="72" r="32" fill="#4F46E5" opacity="0.2"/><circle cx="122" cy="72" r="32" fill="#6366F1" opacity="0.2"/><text x="100" y="130" text-anchor="middle" font-size="32" fill="#4F46E5" opacity="0.35" font-weight="bold" font-family="sans-serif">≈</text></svg>`,
-        'difference': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fdf2f8"/><stop offset="100%" stop-color="#fce7f3"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><circle cx="72" cy="68" r="30" fill="#C026D3" opacity="0.2"/><circle cx="128" cy="68" r="30" fill="#D946EF" opacity="0.2"/><line x1="93" y1="56" x2="107" y2="80" stroke="#C026D3" stroke-width="3.5" opacity="0.45" stroke-linecap="round"/><line x1="107" y1="56" x2="93" y2="80" stroke="#C026D3" stroke-width="3.5" opacity="0.45" stroke-linecap="round"/></svg>`,
-        'lead': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fef2f2"/><stop offset="100%" stop-color="#fecaca"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><polygon points="100,20 88,48 112,48" fill="#DC2626" opacity="0.45"/><line x1="100" y1="48" x2="100" y2="115" stroke="#DC2626" stroke-width="3.5" opacity="0.35" stroke-linecap="round"/><polygon points="82,95 100,72 118,95" fill="#B91C1C" opacity="0.3"/><circle cx="68" cy="125" r="9" fill="#EF4444" opacity="0.2"/><circle cx="100" cy="125" r="9" fill="#EF4444" opacity="0.2"/><circle cx="132" cy="125" r="9" fill="#EF4444" opacity="0.2"/></svg>`,
-        'characteristic': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f0e8ff"/><stop offset="100%" stop-color="#e0d0f8"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><rect x="50" y="30" width="100" height="65" rx="10" fill="#fff" stroke="#7E22CE" stroke-width="1.5" opacity="0.6"/><line x1="68" y1="50" x2="132" y2="50" stroke="#7E22CE" stroke-width="2" opacity="0.3"/><line x1="68" y1="64" x2="120" y2="64" stroke="#9333EA" stroke-width="2" opacity="0.2"/><line x1="68" y1="78" x2="110" y2="78" stroke="#7E22CE" stroke-width="2" opacity="0.15"/><circle cx="60" cy="50" r="4" fill="#7E22CE" opacity="0.4"/><circle cx="60" cy="64" r="4" fill="#9333EA" opacity="0.4"/><circle cx="60" cy="78" r="4" fill="#7E22CE" opacity="0.4"/><circle cx="90" cy="115" r="12" fill="#A855F7" opacity="0.15"/><circle cx="120" cy="110" r="8" fill="#7E22CE" opacity="0.1"/></svg>`,
-        'dangerous': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fef2f2"/><stop offset="100%" stop-color="#fecaca"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><polygon points="100,22 58,105 142,105" fill="#fff" stroke="#DC2626" stroke-width="3" opacity="0.6"/><text x="100" y="88" text-anchor="middle" font-size="44" fill="#DC2626" opacity="0.55" font-weight="bold" font-family="sans-serif">!</text></svg>`,
-        'human': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e0f2fe"/><stop offset="100%" stop-color="#bae6fd"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><circle cx="100" cy="42" r="22" fill="#0284C7" opacity="0.25"/><line x1="100" y1="64" x2="100" y2="115" stroke="#0284C7" stroke-width="3.5" opacity="0.3" stroke-linecap="round"/><line x1="72" y1="88" x2="100" y2="76" stroke="#0284C7" stroke-width="3.5" opacity="0.3" stroke-linecap="round"/><line x1="128" y1="88" x2="100" y2="76" stroke="#0284C7" stroke-width="3.5" opacity="0.3" stroke-linecap="round"/><line x1="82" y1="115" x2="100" y2="115" stroke="#0284C7" stroke-width="3.5" opacity="0.3" stroke-linecap="round"/><line x1="118" y1="115" x2="100" y2="115" stroke="#0284C7" stroke-width="3.5" opacity="0.3" stroke-linecap="round"/></svg>`,
-        'tuna': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#dbeafe"/><stop offset="100%" stop-color="#bfdbfe"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><ellipse cx="100" cy="78" rx="55" ry="22" fill="#1E40AF" opacity="0.2"/><polygon points="155,78 180,62 180,94" fill="#1E40AF" opacity="0.25"/><circle cx="72" cy="74" r="4" fill="#1a1a2e" opacity="0.5"/><circle cx="71" cy="73" r="1.5" fill="#fff" opacity="0.6"/><path d="M55,78 Q50,68 45,73" fill="none" stroke="#1E40AF" stroke-width="1.5" opacity="0.3"/><ellipse cx="100" cy="78" rx="35" ry="14" fill="#2563EB" opacity="0.1"/></svg>`,
-        'dolphin': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e0f2fe"/><stop offset="100%" stop-color="#bae6fd"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><path d="M35,95 Q48,48 82,52 Q115,56 138,78 Q158,100 148,115 Q138,128 115,118 Q90,105 68,105 Q48,105 35,95Z" fill="#0284C7" opacity="0.3"/><polygon points="78,52 68,32 88,48" fill="#0EA5E9" opacity="0.25"/><circle cx="58" cy="76" r="4" fill="#1a1a2e" opacity="0.5"/><circle cx="57" cy="75" r="1.5" fill="#fff" opacity="0.6"/><path d="M30,90 Q18,100 25,112" fill="none" stroke="#0284C7" stroke-width="2" opacity="0.3"/><path d="M20,125 Q50,115 78,120" fill="none" stroke="#0EA5E9" stroke-width="1.5" opacity="0.2"/></svg>`,
-        'turtle': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ecfdf5"/><stop offset="100%" stop-color="#d1fae5"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><ellipse cx="100" cy="82" rx="48" ry="38" fill="#047857" opacity="0.2"/><ellipse cx="100" cy="82" rx="38" ry="30" fill="#059669" opacity="0.15"/><line x1="62" y1="65" x2="138" y2="65" stroke="#047857" stroke-width="1" opacity="0.2"/><line x1="62" y1="82" x2="138" y2="82" stroke="#047857" stroke-width="1" opacity="0.2"/><line x1="62" y1="99" x2="138" y2="99" stroke="#047857" stroke-width="1" opacity="0.2"/><line x1="82" y1="52" x2="82" y2="112" stroke="#047857" stroke-width="1" opacity="0.15"/><line x1="100" y1="49" x2="100" y2="115" stroke="#047857" stroke-width="1" opacity="0.15"/><line x1="118" y1="52" x2="118" y2="112" stroke="#047857" stroke-width="1" opacity="0.15"/><circle cx="150" cy="78" r="12" fill="#047857" opacity="0.2"/><circle cx="153" cy="76" r="2.5" fill="#1a1a2e" opacity="0.4"/><circle cx="152" cy="75" r="1" fill="#fff" opacity="0.5"/><circle cx="58" cy="108" r="9" fill="#047857" opacity="0.15"/><circle cx="142" cy="108" r="9" fill="#047857" opacity="0.15"/></svg>`,
-        'report': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#dbeafe"/><stop offset="100%" stop-color="#bfdbfe"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><rect x="50" y="20" width="100" height="115" rx="8" fill="#fff" stroke="#1D4ED8" stroke-width="1.5" opacity="0.6"/><rect x="65" y="35" width="25" height="8" rx="4" fill="#2563EB" opacity="0.35"/><line x1="65" y1="55" x2="135" y2="55" stroke="#1D4ED8" stroke-width="2" opacity="0.25"/><line x1="65" y1="68" x2="128" y2="68" stroke="#93C5FD" stroke-width="1.5" opacity="0.3"/><line x1="65" y1="80" x2="120" y2="80" stroke="#93C5FD" stroke-width="1.5" opacity="0.25"/><line x1="65" y1="92" x2="115" y2="92" stroke="#93C5FD" stroke-width="1.5" opacity="0.2"/><line x1="65" y1="104" x2="108" y2="104" stroke="#93C5FD" stroke-width="1.5" opacity="0.15"/><line x1="65" y1="116" x2="100" y2="116" stroke="#93C5FD" stroke-width="1.5" opacity="0.1"/></svg>`,
-        'attack': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fef2f2"/><stop offset="100%" stop-color="#fecaca"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><polygon points="100,25 62,95 138,95" fill="#fff" stroke="#DC2626" stroke-width="3" opacity="0.5"/><line x1="100" y1="48" x2="100" y2="78" stroke="#DC2626" stroke-width="4.5" stroke-linecap="round" opacity="0.55"/><circle cx="100" cy="86" r="5" fill="#DC2626" opacity="0.45"/></svg>`,
-        'record': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#dbeafe"/><stop offset="100%" stop-color="#bfdbfe"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><rect x="50" y="25" width="100" height="110" rx="8" fill="#fff" stroke="#0369A1" stroke-width="1.5" opacity="0.5"/><circle cx="100" cy="75" r="28" fill="none" stroke="#0369A1" stroke-width="2" opacity="0.3"/><circle cx="100" cy="75" r="6" fill="#0369A1" opacity="0.35"/><line x1="100" y1="47" x2="100" y2="55" stroke="#0369A1" stroke-width="2.5" opacity="0.45" stroke-linecap="round"/><line x1="100" y1="55" x2="118" y2="65" stroke="#0369A1" stroke-width="2.5" opacity="0.45" stroke-linecap="round"/></svg>`,
-        'ocean': `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gb${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e0f7fa"/><stop offset="100%" stop-color="#80deea"/></linearGradient></defs><rect width="200" height="160" fill="url(#gb${i})" rx="6"/><path d="M10,65 Q35,50 60,65 Q85,80 110,65 Q135,50 160,65 Q185,80 200,65" fill="none" stroke="#0C4A6E" stroke-width="3" opacity="0.35"/><path d="M10,85 Q35,70 60,85 Q85,100 110,85 Q135,70 160,85 Q185,100 200,85" fill="none" stroke="#0E7490" stroke-width="2.5" opacity="0.3"/><path d="M10,105 Q35,90 60,105 Q85,120 110,105 Q135,90 160,105 Q185,120 200,105" fill="none" stroke="#0C4A6E" stroke-width="2" opacity="0.2"/><circle cx="45" cy="40" r="18" fill="#22D3EE" opacity="0.15"/><circle cx="160" cy="35" r="12" fill="#0C4A6E" opacity="0.1"/></svg>`
-      };
-      return map[w.word] || `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="160" fill="#f0f4f8" rx="6"/><text x="100" y="85" text-anchor="middle" font-size="48">${w.emoji || '📖'}</text></svg>`;
-    }
-
-    function genBackSVG(w, i) {
-      const emojiMap = {
-        'bear': '🐻', 'black': '⬛', 'grizzly': '🐻', 'brown': '', 'blonde': '💛',
-        'intelligent': '🧠', 'curious': '🔍', 'belong to': '🏷️', 'area': '🗺️', 'hurt': '',
-        'African': '🌍', 'Asian': '', 'on the other hand': '🔄', 'in the same way': '',
-        'similarity': '', 'difference': '⚡', 'lead': '👑', 'characteristic': '✨',
-        'dangerous': '️', 'human': '', 'tuna': '🐟', 'dolphin': '🐬', 'turtle': '🐢',
-        'report': '📰', 'attack': '⚔️', 'record': '📝', 'ocean': '🌊'
-      };
-      const c = w.colors;
-      const em = emojiMap[w.word] || '📖';
-      return `<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
-        <defs><linearGradient id="bg${i}" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="${c[0]}" stop-opacity="0.15"/>
-          <stop offset="100%" stop-color="${c[1]}" stop-opacity="0.2"/>
-        </linearGradient></defs>
-        <rect width="200" height="120" fill="url(#bg${i})" rx="0"/>
-        <text x="100" y="52" text-anchor="middle" font-size="42">${em}</text>
-        <text x="100" y="85" text-anchor="middle" font-size="12" fill="#888" font-family="sans-serif" font-weight="500">${w.word}</text>
-      </svg>`;
-    }
-
-    function esc(s) {
-      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-              .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-    }
-
-    /* ===== SPEECH - 有道单词发音 + Google例句发音 ===== */
+    /* ===== SPEECH ===== */
     function speakWord(text) {
-      // 单词发音 - 有道词典（真人发音）
-      if (window._currentAudio) {
-        window._currentAudio.pause();
-        window._currentAudio = null;
-      }
+      if (window._currentAudio) { window._currentAudio.pause(); window._currentAudio = null; }
       var url = 'https://dict.youdao.com/dictvoice?audio=' + encodeURIComponent(text) + '&type=1';
       var audio = new Audio(url);
       window._currentAudio = audio;
-      audio.play().catch(function() {
-        // 有道失败时用 Google TTS 兜底
-        speakSentence(text);
-      });
+      audio.play().catch(function() {});
     }
-
-    function speakSentence(text) {
-      // 例句发音 - Google Translate TTS
-      if (window._currentAudio) {
-        window._currentAudio.pause();
-        window._currentAudio = null;
-      }
-      // 去掉首尾引号
-      var cleanText = text.replace(/^["']|["']$/g, '');
-      var url = 'https://translate.google.com/translate_tts?ie=UTF-8&q=' + encodeURIComponent(cleanText) + '&tl=en&client=tw-ob&ttsspeed=0.8';
-      var audio = new Audio(url);
-      window._currentAudio = audio;
-      audio.play().catch(function(e) {
-        console.log('TTS failed:', e);
-      });
-    }
-
-    // 兼容旧代码
-    function speak(text) {
-      speakWord(text);
-    }
+    function speak(text) { speakWord(text); }
 
     /* ===== QUIZ ===== */
     function renderQuiz() {
-      const dots = document.getElementById('progress-dots');
+      var dots = document.getElementById('progress-dots');
       dots.innerHTML = '';
-      WORDS.forEach((_, i) => {
-        const d = document.createElement('div');
-        d.className = 'dot'; d.id = `dot-${i}`;
+      WORDS.forEach(function(_, i) {
+        var d = document.createElement('div');
+        d.className = 'dot'; d.id = 'dot-' + i;
         dots.appendChild(d);
       });
     }
-
     function showQuizWord() {
       if (currentQuizIndex >= WORDS.length) { showResults(); return; }
-      const w = WORDS[currentQuizIndex];
+      var w = WORDS[currentQuizIndex];
       answered = false;
-      document.getElementById('progress-label').textContent = `WORD ${currentQuizIndex + 1}/${WORDS.length}`;
+      document.getElementById('progress-label').textContent = 'WORD ' + (currentQuizIndex + 1) + '/' + WORDS.length;
       document.getElementById('quiz-chinese').textContent = w.meaning;
       document.getElementById('quiz-phonetic').textContent = w.phonetic;
-      const inp = document.getElementById('quiz-input');
+      var inp = document.getElementById('quiz-input');
       inp.value = ''; inp.className = 'quiz-input'; inp.placeholder = 'Type the word...';
       document.getElementById('feedback-msg').textContent = '';
       document.getElementById('feedback-msg').className = 'feedback-msg';
       document.getElementById('hint-text').textContent = '';
       document.getElementById('hint-btn').style.display = 'inline-block';
       document.getElementById('submit-btn').textContent = 'SUBMIT ANSWER';
-      document.getElementById('progress-bar').style.width = `${((currentQuizIndex + 1) / WORDS.length) * 100}%`;
-      WORDS.forEach((_, i) => {
-        const dot = document.getElementById(`dot-${i}`);
+      document.getElementById('progress-bar').style.width = (((currentQuizIndex + 1) / WORDS.length) * 100) + '%';
+      WORDS.forEach(function(_, i) {
+        var dot = document.getElementById('dot-' + i);
         dot.className = 'dot';
         if (i < currentQuizIndex) dot.className = quizResults[i] ? 'dot correct' : 'dot wrong';
         else if (i === currentQuizIndex) dot.className = 'dot current';
       });
-      setTimeout(() => { try { inp.focus(); } catch(e) {} }, 100);
+      setTimeout(function() { try { inp.focus(); } catch(e) {} }, 100);
     }
-
     function submitAnswer() {
       if (answered) { currentQuizIndex++; showQuizWord(); return; }
-      const input = document.getElementById('quiz-input').value.trim().toLowerCase();
-      const correct = WORDS[currentQuizIndex].word.toLowerCase();
-      const isCorrect = input === correct;
+      var input = document.getElementById('quiz-input').value.trim().toLowerCase();
+      var correct = WORDS[currentQuizIndex].word.toLowerCase();
+      var isCorrect = input === correct;
       answered = true;
       quizResults[currentQuizIndex] = isCorrect;
-      const inp = document.getElementById('quiz-input');
-      const fb = document.getElementById('feedback-msg');
+      var inp = document.getElementById('quiz-input');
+      var fb = document.getElementById('feedback-msg');
       if (isCorrect) {
         inp.className = 'quiz-input correct';
         fb.textContent = '✅ Correct!';
         fb.className = 'feedback-msg correct';
       } else {
         inp.className = 'quiz-input wrong';
-        fb.textContent = `❌ Wrong! Answer: ${correct}`;
+        fb.textContent = '❌ Wrong! Answer: ' + correct;
         fb.className = 'feedback-msg wrong';
       }
       speak(WORDS[currentQuizIndex].word);
-      const dot = document.getElementById(`dot-${currentQuizIndex}`);
-      dot.className = isCorrect ? 'dot correct' : 'dot wrong';
+      document.getElementById('dot-' + currentQuizIndex).className = isCorrect ? 'dot correct' : 'dot wrong';
       document.getElementById('submit-btn').textContent = 'NEXT WORD →';
     }
-
     function showHint() {
-      const w = WORDS[currentQuizIndex];
+      var w = WORDS[currentQuizIndex];
       document.getElementById('hint-text').textContent = w.word[0] + '_'.repeat(w.word.length - 2) + w.word[w.word.length - 1];
     }
-
-    /* ===== RESULTS ===== */
     function showResults() {
       document.getElementById('quiz-mode').style.display = 'none';
       document.getElementById('results-screen').classList.add('active');
-      document.getElementById('name-screen').classList.remove('active');
-      document.getElementById('checkin-screen').classList.remove('active');
-      const correct = quizResults.filter(Boolean).length;
-      const total = WORDS.length;
-      const pct = Math.round((correct / total) * 100);
-      let emoji, title;
-      if (pct === 100) { emoji = '🏆'; title = 'Perfect Score!'; }
-      else if (pct >= 80) { emoji = '🎉'; title = 'Great Job!'; }
-      else if (pct >= 60) { emoji = ''; title = 'Good Effort!'; }
-      else if (pct >= 40) { emoji = '💪'; title = 'Keep Practicing!'; }
-      else { emoji = ''; title = 'Study More!'; }
+      var correct = quizResults.filter(Boolean).length;
+      var total = WORDS.length;
+      var pct = Math.round((correct / total) * 100);
+      var emoji = pct === 100 ? '🏆' : pct >= 80 ? '🎉' : pct >= 60 ? '👍' : pct >= 40 ? '💪' : '📚';
+      var title = pct === 100 ? 'Perfect Score!' : pct >= 80 ? 'Great Job!' : pct >= 60 ? 'Good Effort!' : pct >= 40 ? 'Keep Practicing!' : 'Study More!';
       document.getElementById('results-emoji').textContent = emoji;
       document.getElementById('results-title').textContent = title;
-      document.getElementById('results-score').textContent = `${correct}/${total}`;
-      document.getElementById('results-detail').textContent = `正确率 ${pct}%，点击提交成绩完成打卡`;
+      document.getElementById('results-score').textContent = correct + '/' + total;
+      document.getElementById('results-detail').textContent = '正确率 ' + pct + '%，点击提交成绩完成打卡';
     }
-
     function showNameInput() {
       document.getElementById('results-screen').classList.remove('active');
       document.getElementById('name-screen').classList.add('active');
-      setTimeout(() => { try { document.getElementById('name-input').focus(); } catch(e) {} }, 100);
+      setTimeout(function() { try { document.getElementById('name-input').focus(); } catch(e) {} }, 100);
     }
-
     function submitCheckin() {
-      const name = document.getElementById('name-input').value.trim();
+      var name = document.getElementById('name-input').value.trim();
       if (!name) {
         document.getElementById('name-input').style.borderColor = '#ef4444';
         document.getElementById('name-input').placeholder = '请输入姓名后再提交';
         return;
       }
-
-      const correct = quizResults.filter(Boolean).length;
-      const total = WORDS.length;
-      const pct = Math.round((correct / total) * 100);
-
+      var correct = quizResults.filter(Boolean).length;
+      var total = WORDS.length;
+      var pct = Math.round((correct / total) * 100);
       document.getElementById('name-screen').classList.remove('active');
       document.getElementById('checkin-screen').classList.add('active');
-
       document.getElementById('checkin-name').textContent = name;
-      document.getElementById('checkin-score').textContent = `得分：${correct}/${total}（${pct}%）`;
-
-      const now = new Date();
-      const dateStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-      document.getElementById('checkin-detail').textContent = `打卡时间：${dateStr}`;
-
-      // Save check-in record to localStorage
-      const record = { name, score: correct, total, pct, date: dateStr };
-      const history = JSON.parse(localStorage.getItem('vocab-checkin') || '[]');
+      document.getElementById('checkin-score').textContent = '得分：' + correct + '/' + total + '（' + pct + '%）';
+      var now = new Date();
+      var dateStr = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0') + ' ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+      document.getElementById('checkin-detail').textContent = '打卡时间：' + dateStr;
+      var record = {name: name, score: correct, total: total, pct: pct, date: dateStr};
+      var history = JSON.parse(localStorage.getItem('vocab-checkin') || '[]');
       history.push(record);
       localStorage.setItem('vocab-checkin', JSON.stringify(history));
     }
-
     function restartQuiz() {
       currentQuizIndex = 0;
       quizResults = [];
@@ -923,11 +521,9 @@
       renderQuiz();
       showQuizWord();
     }
-
-    document.addEventListener('keydown', e => {
+    document.addEventListener('keydown', function(e) {
       if (e.key === 'Enter' && currentTab === 'quiz') submitAnswer();
     });
-
     init();
   </script>
 </body>
