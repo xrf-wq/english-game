@@ -739,7 +739,10 @@
       </svg>`;
     }
 
-    function esc(s) { return s.replace(/'/g, "\\'"); }
+    function esc(s) {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
 
     /* ===== SPEECH - 有道单词发音 + Google例句发音 ===== */
     function speakWord(text) {
