@@ -662,7 +662,7 @@
                 <div class="chinese-meaning">${w.meaning}</div>
                 <div class="example-box">
                   <div class="example-en">
-                    <button class="play-btn-sm" onclick="event.stopPropagation();speak('${esc(w.example)}')">
+                    <button class="play-btn-sm" onclick="event.stopPropagation();speakSentence('${esc(w.example)}')">
                       <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
                     </button>
                     <span>"${w.example}"</span>
@@ -741,20 +741,41 @@
 
     function esc(s) { return s.replace(/'/g, "\\'"); }
 
-    /* ===== SPEECH - 有道在线发音 ===== */
-    function speak(text) {
-      // 停止之前的播放
+    /* ===== SPEECH - 有道单词发音 + Google例句发音 ===== */
+    function speakWord(text) {
+      // 单词发音 - 有道词典（真人发音）
       if (window._currentAudio) {
         window._currentAudio.pause();
         window._currentAudio = null;
       }
-      // 使用有道词典在线发音（美音）
       var url = 'https://dict.youdao.com/dictvoice?audio=' + encodeURIComponent(text) + '&type=1';
       var audio = new Audio(url);
       window._currentAudio = audio;
-      audio.play().catch(function(e) {
-        console.log('Audio play failed:', e);
+      audio.play().catch(function() {
+        // 有道失败时用 Google TTS 兜底
+        speakSentence(text);
       });
+    }
+
+    function speakSentence(text) {
+      // 例句发音 - Google Translate TTS
+      if (window._currentAudio) {
+        window._currentAudio.pause();
+        window._currentAudio = null;
+      }
+      // 去掉首尾引号
+      var cleanText = text.replace(/^["']|["']$/g, '');
+      var url = 'https://translate.google.com/translate_tts?ie=UTF-8&q=' + encodeURIComponent(cleanText) + '&tl=en&client=tw-ob&ttsspeed=0.8';
+      var audio = new Audio(url);
+      window._currentAudio = audio;
+      audio.play().catch(function(e) {
+        console.log('TTS failed:', e);
+      });
+    }
+
+    // 兼容旧代码
+    function speak(text) {
+      speakWord(text);
     }
 
     /* ===== QUIZ ===== */
